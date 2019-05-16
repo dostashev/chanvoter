@@ -8,7 +8,7 @@ class User(Base):
     __tablename__= 'users'
 
     id = Column(Integer, primary_key=True)
-    public_key = Column(String, unique=True)
+    address = Column(String, unique=True)
     private_key = Column(String, unique=True)
     coins = Column(Integer)
 
@@ -17,8 +17,8 @@ class Transaction(Base):
     __tablename__ = 'transactions'
 
     id = Column(Integer, primary_key=True)
-    sender_id = Column(Integer, ForeignKey('users.id'))
-    receiver_id = Column(Integer, ForeignKey('users.id'))
+    sender_addr = Column(Integer, ForeignKey('users.address'))
+    recipient_addr = Column(Integer, ForeignKey('users.address'))
     amount = Column(Integer)
 
 
@@ -48,10 +48,9 @@ class Vote(Base):
     __tablename__ = 'votes'
  
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('users.id'))
+    user_addr = Column(Integer, ForeignKey('users.address'))
     contest_id = Column(Integer, ForeignKey('contests.id'))
-    winner_id = Column(Integer, ForeignKey('girls.id'))
-    looser_id = Column(Integer, ForeignKey('girls.id'))
+    chosen_id = Column(Integer, ForeignKey('girls.id'))
     
     user = relationship('User')
     contest = relationship('Contest')

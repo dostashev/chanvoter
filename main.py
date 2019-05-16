@@ -4,6 +4,8 @@ import database
 from database import models
 import dbutils
 
+from config import Config
+
 app = Flask(__name__)
 db_path = 'var/main.db'
 
@@ -20,7 +22,18 @@ def contest():
 @app.route("/vote", methods = ["POST"])
 def vote():
     #принимает форму, возвращает информацию об успехе
-    pass
+    fd = request.form
+    scope, _ = database.open_db(db_path)
+    with scope() as dbsession:
+        user_addr = dbutils.get_address(dbsession, fd['private_key'])
+        if user_addr == "":
+            return "error: invalid private key"
+        if dbutils.check_already_voted(dbsession, user_addr, fd['conteset_id']):
+            return "error: already voted in this contest"
+        if dbutils.get_balance(dbsession, user_addr) >= Config.COINS_PER_VOTE:
+            dbutils.add_coins(dbsession, user_addr, -Config.COINS_PER_VOTE)
+            dbsession.add(models.Vote(user_addr = user_addr, contest_id = fd['contest_id'], chosen_id = fd['chosen_id']))
+    return "success"
 
 @app.route("/transactions", methods = ["GET", "POST"])
 def transactions():
@@ -30,14 +43,14 @@ def transactions():
 @app.route('/new_transaction', methods = ["POST"])
 def new_transaction():
     #принимает форму, делает дела, возвращает информацию об успехе
-    td = request.form
+    fd = request.form
     scope, _ = database.open_db(db_path)
     with scope() as dbsession:
-        sender = dbutils.get_address(dbsession, td['private_key'])
+        sender = dbutils.get_address(dbsession, fd['private_key'])
         if sender == "":
-            return "error: wrong private key"
-        recipient = td['recipient']
-        amount = td['amount']
+            return "error: invalid private key"
+        recipient = fd['recipient']
+        amount = fd['amount']
         if dbutils.get_balance(dbsession, sender) >= amount:
             dbutils.add_coins(dbsession, sender, -amount)
             dbutils.add_coins(dbsession, recipient, amount)
@@ -52,9 +65,12 @@ def new_bet():
     pass
 
 @app.route("/get_balance", methods = ["POST"])
-def submit_answer():
+def get_balance():
     #принимает форму, отдает баланс кошелька
-    pass
+    fd = request.form
+    scope, _ = database.open_db(db_path)
+    with scope() as dbsession:
+        return dbutils.get_balance(dbsession, dbutils.get_address(dbsession, fd['private_key']))
     
 
 if __name__ == "__main__":
