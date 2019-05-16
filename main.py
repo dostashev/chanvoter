@@ -1,6 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for, make_response, session
 
+import database
+from database import models
+import dbutils
+
 app = Flask(__name__)
+db_path = 'var/main.db'
 
 @app.route("/", methods = ["GET", "POST"])
 def index():
@@ -25,7 +30,21 @@ def transactions():
 @app.route('/new_transaction', methods = ["POST"])
 def new_transaction():
     #принимает форму, делает дела, возвращает информацию об успехе
-    pass
+    td = request.form
+    scope, _ = database.open_db(db_path)
+    with scope() as dbsession:
+        sender = dbutils.get_address(dbsession, td['private_key'])
+        if sender == "":
+            return "error: wrong private key"
+        recipient = td['recipient']
+        amount = td['amount']
+        if dbutils.get_balance(dbsession, sender) >= amount:
+            dbutils.add_coins(dbsession, sender, -amount)
+            dbutils.add_coins(dbsession, recipient, amount)
+            dbsession.add(models.Transaction(sender_addr = sender, recipient_addr = recipient, amount = amount))
+        else:
+            return "error: not enough coins"
+    return "success"
 
 @app.route("/new_bet", methods = ["POST"])
 def new_bet():
