@@ -1,0 +1,46 @@
+<html>
+        <head>
+            <meta charset='utf-8'>
+        <head>
+
+        <body>
+            <form action='/vote' method='POST'>
+            <input type='hidden' name='contest_id' value={{ contest_id }} \>
+            <input type='hidden' id='chosen_id' name='chosen_id' \>
+
+            <div id='first-girl' onclick='document.getElementById("chosen_id").value={{ first_girl.id }}; this.parentNode.submit()'>
+                    <div>
+                        {{ first_girl.name }}
+                    </div>
+
+                    <div>
+                        instagram widget will use this URL: {{ first_girl.instagram }}
+                    </div>
+
+                    <div>
+                        this url of profile image: Nothing, nevermind 
+                    </div> 
+            </div>
+
+            <br><br>
+
+            <div id='second-girl' onclick='{document.getElementById("chosen_id").value={{ second_girl.id }}; this.parentNode.submit()}'>
+                    <div>
+                        {{ second_girl.name }}
+                    </div>
+
+                    <div>
+                        instagram widget will use this URL: {{ second_girl.instagram }}
+                    </div>
+
+                    <div>
+                        this url of profile image: Nothing, nevermind 
+                    </div>
+            </div>
+
+            <p>ur ptivate key:  </p>
+            <input type="text" name="private_key">
+
+            </form>
+        </body>
+</html>
