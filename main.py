@@ -15,9 +15,11 @@ def index():
     pass
 
 @app.route("/contest/<int:contestID>", methods = ["GET", "POST"])
-def contest():
+def contest(contestID):
     #отображает информацию о матче, предлагает проголосовать или сделать ставку
-    pass
+    scope, _ = database.open_db(db_path)
+    with scope() as dbsession:
+        return render_template('contest.html',**dbutils.get_contest_girls(dbsession,contestID),contest_id=contestID)
 
 @app.route("/vote", methods = ["POST"])
 def vote():

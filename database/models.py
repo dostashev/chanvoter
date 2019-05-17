@@ -40,8 +40,8 @@ class Contest(Base):
     begin = Column(DateTime)
     end = Column(DateTime)
 
-    #first_girl = relationship('Girl', back_populates='contests')
-    #second_girl = relationship('Girl', back_populates='contests')
+    first_girl = relationship('Girl',foreign_keys=[first_girl_id])
+    second_girl = relationship('Girl',foreign_keys=[second_girl_id])
 
 
 class Vote(Base):
