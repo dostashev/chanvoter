@@ -12,3 +12,6 @@ def fill_db(db_path):
         for c in contests:
             cur_c = models.Contest(**c)
             s.add(cur_c)
+        for u in users:
+            cur_u = models.User(**u)
+            s.add(cur_u)

@@ -31,3 +31,11 @@ contests = [
         'end' : datetime.datetime(2019,12,1)
     }
 ]
+
+users = [
+    {
+        'address' : 'root',
+        'private_key' : 'jojo',
+        'coins' : 1000000000
+    }
+]

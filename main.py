@@ -30,7 +30,7 @@ def vote():
         user_addr = dbutils.get_address(dbsession, fd['private_key'])
         if user_addr == "":
             return "error: invalid private key"
-        if dbutils.check_already_voted(dbsession, user_addr, fd['conteset_id']):
+        if dbutils.check_already_voted(dbsession, user_addr, fd['contest_id']):
             return "error: already voted in this contest"
         if dbutils.get_balance(dbsession, user_addr) >= Config.COINS_PER_VOTE:
             dbutils.add_coins(dbsession, user_addr, -Config.COINS_PER_VOTE)
@@ -72,7 +72,7 @@ def get_balance():
     fd = request.form
     scope, _ = database.open_db(db_path)
     with scope() as dbsession:
-        return dbutils.get_balance(dbsession, dbutils.get_address(dbsession, fd['private_key']))
+        return str(dbutils.get_balance(dbsession, dbutils.get_address(dbsession, fd['private_key'])))
     
 
 if __name__ == "__main__":
