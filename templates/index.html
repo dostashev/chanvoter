@@ -3,5 +3,17 @@
         </head>
 
         <body>
+                <div id='heading'><h2>Contest list</h2></div>
+                <div id='contest-list'>
+                {% for contest in active_contests %}
+                <div class='contes-banner'>
+                <a href='/contest/{{ contest.id }}'>
+                        {{ contest.first_girl.name }} VS {{ contest.second_girl.name }} </br>
+                        until the {{ contest.end }}
+                </a>
+                </div>
+                </br>
+                {% endfor %}
+                </div>
         </body>
 </html>
