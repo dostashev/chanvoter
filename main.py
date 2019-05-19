@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, make_response, session
+from flask import Flask, render_template, request, redirect, url_for, make_response, session, send_from_directory
 
 import database
 from database import models
@@ -6,7 +6,7 @@ import dbutils
 
 from config import Config
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='')
 db_path = 'var/main.db'
 
 @app.route("/", methods = ["GET", "POST"])
@@ -74,6 +74,9 @@ def get_balance():
     with scope() as dbsession:
         return str(dbutils.get_balance(dbsession, dbutils.get_address(dbsession, fd['private_key'])))
     
+@app.route("/resources/<path:path>")
+def send_resource(path):
+    return send_from_directory("resources", path)
 
 if __name__ == "__main__":
     app.secret_key = "loadsecretkey"
