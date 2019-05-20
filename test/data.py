@@ -29,6 +29,12 @@ contests = [
         'second_girl_id' : 2,
         'begin' : datetime.datetime(2019,1,1),
         'end' : datetime.datetime(2019,12,1)
+    },
+    {
+        'first_girl_id' : 3,
+        'second_girl_id' : 4,
+        'begin' : datetime.datetime(2019,1,1),
+        'end' : datetime.datetime(2019,12,1)
     }
 ]
 
