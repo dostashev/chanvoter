@@ -20,3 +20,6 @@ def get_contest_girls(dbsession, contest_id):
 
 def get_active_contests(dbsession):
     return list(dbsession.query(Contest).filter(Contest.end >= datetime.datetime.today()).all())
+
+def get_all_girls(dbsession):
+    return list(map(serialize,dbsession.query(Girl).all()))

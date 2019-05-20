@@ -17,6 +17,16 @@ def index():
         active_contests = dbutils.get_active_contests(dbsession)
         return render_template('index.html',active_contests = active_contests)
 
+@app.route("/rating", methods = ["GET", "POST"])
+def get_rating():
+    #отображает текущую таблицу рейтинга
+    scope, _ = database.open_db(db_path)
+    with scope() as dbsession:
+        girls = sorted(dbutils.get_all_girls(dbsession), key=lambda x : -x["ELO"])
+        for i in range(len(girls)):
+            girls[i]["rating"] = i + 1
+        return render_template('rating.html', girls = girls)
+
 @app.route("/contest/<int:contestID>", methods = ["GET", "POST"])
 def contest(contestID):
     #отображает информацию о матче, предлагает проголосовать или сделать ставку
