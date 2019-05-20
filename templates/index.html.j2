@@ -55,7 +55,7 @@
                 + minutes + "m " + seconds + "s ";
                 if (distance < 0) {
                     clearInterval(x);
-                    document.getElementById("demo").innerHTML = "Закончен";
+                    document.getElementById("countdown{{ contest.id }}").innerHTML = "Закончен";
                 }
                 }, 1000);
         </script>
