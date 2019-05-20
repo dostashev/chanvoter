@@ -32,7 +32,7 @@
                             Vote!
                         </button></div>
                         </a>
-                        <h4>До конца голосования: 13:45:61</h4>
+                        <h4 id="countdown{{contest.id}}">До конца голосования: </h4>
                 </div>
 
                 <div class='col-4 float-right text-center'>
@@ -41,6 +41,24 @@
                 </div>
         </div>
         {% endfor %}
-
+        {% for contest in active_contests %}
+        <script>
+            var countDownDate{{ contest.id }} = new Date("{{ contest.end.isoformat() }}").getTime();
+            setInterval(function() {
+                var now = new Date().getTime();
+                var distance = countDownDate{{ contest.id }} - now;
+                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                document.getElementById("countdown{{ contest.id }}").innerHTML = "До конца голосования: " + days + "d " + hours + "h "
+                + minutes + "m " + seconds + "s ";
+                if (distance < 0) {
+                    clearInterval(x);
+                    document.getElementById("demo").innerHTML = "Закончен";
+                }
+                }, 1000);
+        </script>
+        {% endfor %}
     </div>
 {% endblock %}
