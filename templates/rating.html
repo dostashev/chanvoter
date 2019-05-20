@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block body %}
+<div class='container mt-3'>    
+        <div class='row'>
+            <img  class='rounded mx-auto img-fluid d-block col-6' alt='Артур Шопенгауэр' src='https://germanexpert.ru/wp-content/uploads/2018/01/Friedrich-Wilhelm-Nietzsche-750x350.jpg'>
+        </div>
+
+        <div class='row'>  
+            <div class='container center-block'>
+                <blockquote class="blockquote text-center">
+                    <p class="mb-0">Что падает, то нужно ещё толкнуть.</p>
+                <footer class="blockquote-footer"><cite>Фридрих Ницше</cite></footer>
+                </blockquote>
+            </div>
+        </div>
+
+    <div class='row col-8 mt-5 mx-auto justify-content-center'>
+        <h1>Рейтинг</h1>
+    </div>
+
+    <table class='table'>
+        <thead>
+            <th scope="col">#</th>
+            <th scope="col">Имя</th>
+            <th scope="col">Instagram</th>
+            <th scope="col">ELO</th>
+        </thead>
+
+        <tbody>
+            {% for girl in girls %}
+            <tr>
+            <th scope='row'>{{ girl.rating }}</th>
+            <td>{{ girl.name }}</td>
+            <td><a href='http://www.instagram.com/{{ girl.instagram }}'>{{ girl.instagram }}</a>
+            <td>{{ girl.ELO }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
