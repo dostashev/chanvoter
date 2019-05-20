@@ -12,7 +12,10 @@ db_path = 'var/main.db'
 @app.route("/", methods = ["GET", "POST"])
 def index():
     #отображает текущие, прошедшие и предстоящие матчи и всякую разную инфу
-    pass
+    scope, _ = database.open_db(db_path)
+    with scope() as dbsession:
+        active_contests = dbutils.get_active_contests(dbsession)
+        return render_template('index.html',active_contests = active_contests)
 
 @app.route("/contest/<int:contestID>", methods = ["GET", "POST"])
 def contest(contestID):
@@ -66,7 +69,7 @@ def new_bet():
     #принимает форму, делает ставочку, возвращает информацию об успехе
     pass
 
-@app.route("/get_balance", methods = ["POST"])
+@app.route("/get_balance", methods = ["GET", "POST"])
 def get_balance():
     #принимает форму, отдает баланс кошелька
     fd = request.form

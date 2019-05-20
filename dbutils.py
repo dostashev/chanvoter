@@ -1,5 +1,6 @@
 from database.models import *
 from database.utils import serialize
+import datetime
 
 def get_balance(dbsession, address):
     return dbsession.query(User).filter(User.address == address).first().coins
@@ -16,3 +17,6 @@ def check_already_voted(dbsession, address, contest_id):
 def get_contest_girls(dbsession, contest_id):
     contest = dbsession.query(Contest).filter(Contest.id == contest_id).first()
     return {'first_girl':serialize(contest.first_girl),'second_girl':serialize(contest.second_girl)}
+
+def get_active_contests(dbsession):
+    return list(dbsession.query(Contest).filter(Contest.end >= datetime.datetime.today()).all())
