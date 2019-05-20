@@ -1,42 +1,57 @@
 {% extends "base.html.j2" %}
 {% block body %}
- 
-            <form action='/vote' method='POST'>
-            <input type='hidden' name='contest_id' value={{ contest_id }} \>
-            <input type='hidden' id='chosen_id' name='chosen_id' \>
+<div class='container'>
 
-            <div id='first-girl' onclick='document.getElementById("chosen_id").value={{ first_girl.id }}; this.parentNode.submit()'>
-                    <div>
-                        {{ first_girl.name }}
-                    </div>
+    <div class='row'>
+        <img  class='rounded mx-auto d-block col-6' alt='Артур Шопенгауэр' src='http://www.cablook.com/wp-content/uploads/2016/04/sade.jpg'>
+    </div>
 
-                    <div>
-                        instagram widget will use this URL: {{ first_girl.instagram }}
-                    </div>
+    <div class='row'>  
+        <div class='container center-block'>
+            <blockquote class="blockquote text-center">
+                <p class="mb-0">Там, где люди будут равными, где не будет существовать различий, - никогда не будет существовать счастья.</p>
+                <footer class="blockquote-footer"><cite>Маркиз Де Сад, первый садист</cite></footer>
+            </blockquote>
+        </div>
+    </div>
 
-                    <div>
-                        this url of profile image: Nothing, nevermind 
-                    </div> 
+    <form action='/vote' method='POST'>
+
+    <input type='hidden' name='contest_id' value={{ contest_id }} \>
+    <input type='hidden' id='chosen_id' name='chosen_id' \>
+
+    <div class='card-deck mb-3 text-center'>
+    <div id='first-girl' class='card mb-4 shadow-sm'  onclick='document.getElementById("chosen_id").value={{ first_girl.id }}; this.parentNode.submit()'>
+            <div class='card-header'>
+                    <h4 class='my-0 font-weight-normal'> {{ first_girl.name }}</h4>
             </div>
 
-            <br><br>
+            <div class='card-body'>
+                instagram widget will use this URL: {{ first_girl.instagram }}
+                this url of profile image: Nothing, nevermind 
+            </div> 
+    </div>
 
-            <div id='second-girl' onclick='{document.getElementById("chosen_id").value={{ second_girl.id }}; this.parentNode.submit()}'>
-                    <div>
-                        {{ second_girl.name }}
-                    </div>
-
-                    <div>
-                        instagram widget will use this URL: {{ second_girl.instagram }}
-                    </div>
-
-                    <div>
-                        this url of profile image: Nothing, nevermind 
-                    </div>
+    <div id='second-girl' class='card mb-4 shadow-sm'  onclick='{document.getElementById("chosen_id").value={{ second_girl.id }}; this.parentNode.submit()}'>
+            <div class='card-header'>
+                    <h4 class='my-0 font-weight-normal'>{{ second_girl.name }}</h4>
             </div>
 
-            <p>ur ptivate key:  </p>
-            <input type="text" name="private_key">
+            <div class='card-body'>
+                instagram widget will use this URL: {{ second_girl.instagram }}
+            </div>
 
-            </form>
+            <div>
+                this url of profile image: Nothing, nevermind 
+            </div>
+    </div>
+    </div>
+
+    <div class='row'>
+    <p>ur ptivate key:  </p>
+    <input type="text" name="private_key">
+    </div>
+    <!-- </form>
+
+</div>
 {% endblock %}
