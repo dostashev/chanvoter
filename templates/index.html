@@ -18,39 +18,29 @@
         <div class='row col-6 mt-5 mx-auto justify-content-center'>
             <h1>Актуальные соревнования:</h1>
         </div>
+
+        {% for contest in active_contests %}
         <div class='row col-8 mx-auto align-item-center border bg-light mt-3'>
                 <div class='col-4 float-left text-center'>
-                    <img class='rounded img-fluid pt-3' src='https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fv.img.com.ua%2Fb%2F1100x999999%2F5%2Fed%2Fefbc4030586f964def135ca78401ced5.jpg&f=1'>
-                    <h6>Юлия Тимошенко</h6>
+                        <img class='rounded img-fluid pt-3' src='{{ contest.first_girl.photo }}'>
+                    <h6>{{ contest.first_girl.name }}</h6>
                 </div>
 
                 <div class='col-4 mx-auto center-text text-center mt-3'>
-                        <div><button type='button' class='btn btn-dark btn-block'>Vote!</button></div>
+                        <a href='/contest/{{ contest.id  }}'>
+                        <div><button type='button' class='btn btn-dark btn-block' >
+                            Vote!
+                        </button></div>
+                        </a>
                         <h4>До конца голосования: 13:45:61</h4>
                 </div>
 
                 <div class='col-4 float-right text-center'>
-                    <img class='rounded img-fluid pt-3' src='https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fv.img.com.ua%2Fb%2F1100x999999%2F5%2Fed%2Fefbc4030586f964def135ca78401ced5.jpg&f=1'>
-                    <h6>Юлия Тимошенко</h6>
+                        <img class='rounded img-fluid pt-3' src='{{ contest.second_girl.photo }}'>
+                    <h6>{{ contest.second_girl.name }}</h6>
                 </div>
         </div>
-
-        <div class='row col-8 mx-auto align-item-center border bg-light mt-3'>
-                <div class='col-4 float-left text-center'>
-                    <img class='rounded img-fluid pt-3' src='https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fv.img.com.ua%2Fb%2F1100x999999%2F5%2Fed%2Fefbc4030586f964def135ca78401ced5.jpg&f=1'>
-                    <h6>Юлия Тимошенко</h6>
-                </div>
-
-                <div class='col-4 mx-auto center-text text-center mt-3'>
-                        <div><button type='button' class='btn btn-dark btn-block'>Vote!</button></div>
-                        <h4>До конца голосования: 13:45:61</h4>
-                </div>
-
-                <div class='col-4 float-right text-center'>
-                    <img class='rounded img-fluid pt-3' src='https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fv.img.com.ua%2Fb%2F1100x999999%2F5%2Fed%2Fefbc4030586f964def135ca78401ced5.jpg&f=1'>
-                    <h6>Юлия Тимошенко</h6>
-                </div>
-        </div>
+        {% endfor %}
 
     </div>
 {% endblock %}
