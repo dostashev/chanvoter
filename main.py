@@ -15,14 +15,24 @@ def index():
     scope, _ = database.open_db(db_path)
     with scope() as dbsession:
         active_contests = dbutils.get_active_contests(dbsession)
-        return render_template('index.html',active_contests = active_contests)
+        return render_template('index.html.j2',active_contests = active_contests)
+
+@app.route("/rating", methods = ["GET", "POST"])
+def get_rating():
+    #отображает текущую таблицу рейтинга
+    scope, _ = database.open_db(db_path)
+    with scope() as dbsession:
+        girls = sorted(dbutils.get_all_girls(dbsession), key=lambda x : -x["ELO"])
+        for i in range(len(girls)):
+            girls[i]["rating"] = i + 1
+        return render_template('rating.html.j2', girls = girls)
 
 @app.route("/contest/<int:contestID>", methods = ["GET", "POST"])
 def contest(contestID):
     #отображает информацию о матче, предлагает проголосовать или сделать ставку
     scope, _ = database.open_db(db_path)
     with scope() as dbsession:
-        return render_template('contest.html',**dbutils.get_contest_girls(dbsession,contestID),contest_id=contestID)
+        return render_template('contest.html.j2',**dbutils.get_contest_girls(dbsession,contestID),contest_id=contestID)
 
 @app.route("/vote", methods = ["POST"])
 def vote():
