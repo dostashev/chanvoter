@@ -37,7 +37,7 @@ def contest(contestID):
 @app.route("/vote", methods = ["POST"])
 def vote():
     #принимает форму, возвращает информацию об успехе
-    fd = request.form
+    fd = request.args
     scope, _ = database.open_db(db_path)
     with scope() as dbsession:
         user_addr = dbutils.get_address(dbsession, fd['private_key'])
