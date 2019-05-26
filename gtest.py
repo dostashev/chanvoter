@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, send_from_directory
 from datetime import datetime
 app = Flask(__name__)
 
@@ -74,5 +74,13 @@ def hello_rating():
 
     return render_template('rating.html.j2', girls=girls)
 
+@app.route("/resources/<path:path>")
+def send_resource(path):
+    return send_from_directory("resources", path)
+
 if __name__ == "__main__":
+    app.config.update(
+        TESTING=True,
+        TEMPLATES_AUTO_RELOAD=True
+        )
     app.run(host="0.0.0.0", port=8080)
