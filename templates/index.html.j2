@@ -1,47 +1,64 @@
 {% extends "base.html.j2" %}
+
+{% block head %}
+    {{ super() }}
+    <script type='text/javascript' src='/resources/scripts/index.js'></script>
+{% endblock %}
+
 {% block body %}
-    
-    <div class='container mt-3 col-12'>
+    <div class='jumbotron'>
         <div class='row'>
-            <img  class='rounded mx-auto d-block col-6' alt='Артур Шопенгауэр' src='http://www.izbrannoe.com/upload/resize_cache/iblock/98c/705_391_2/98c13dcb42bf7427cef55b1c16771529.jpg'>
+            <img  class='rounded mx-auto d-block col-6' src='http://www.izbrannoe.com/upload/resize_cache/iblock/98c/705_391_2/98c13dcb42bf7427cef55b1c16771529.jpg'>
         </div>
 
         <div class='row'>  
-            <div class='container center-block'>
+            <div class='center-block col-8 mx-auto'>
                 <blockquote class="blockquote text-center">
                 <p class="mb-0">Низкорослый, узкоплечий, широкобедрый пол мог назвать прекрасным только отуманенный половым побуждением рассудок мужчины: вся его красота и кроется в этом побуждении.</p>
                 <footer class="blockquote-footer"><cite>Артур Шопенгауэр, убеждённый женоненавистник</cite></footer>
                 </blockquote>
             </div>
         </div>
+    </div>
 
-        <div class='row col-6 mt-5 mx-auto justify-content-center'>
-            <h1>Актуальные соревнования:</h1>
+    <div class='row col-6 mx-auto justify-content-center'>
+        <h1 class='mt-5'>Актуальные соревнования:</h1>
+    </div>
+
+    {% for contest in active_contests %}
+
+    <div class='row mt-4'>  
+        <div class='card-deck col-8 mx-auto pb-4 pt-4 bg-light'>
+
+            <div class='card border-dark'>
+                <img src="{{ contest.first_girl.photo }}" class="card-img-top">
+                <div class='card-footer text-center'>{{ contest.first_girl.name }}</div>
+            </div>
+            
+            <div class='card text-center border-dark'>
+                <div class='card-header'>
+                    Сорвенование {{ contest.id }} 
+                </div>
+
+                <div class='card-body'>
+                    <a href='/contest/{{ contest.id }}' class='btn btn-lg btn-primary'>Голосовать!</a>
+                    
+                    <div class='card-text mt-3'>
+                        До конца соревнования осталось <span class='countdown' endtime='{{ contest.end }}'></span>
+                    </div>
+                </div>
+            </div>            
+
+            <div class='card border-dark'>
+                <img src="{{ contest.second_girl.photo }}" class="card-img-top">
+                <div class='card-footer text-center'>{{ contest.second_girl.name }}</div>
+            </div>
         </div>
+    </div>
+    
+    {% endfor %}
 
-        {% for contest in active_contests %}
-        <div class='row col-8 mx-auto align-item-center border bg-light mt-3'>
-                <div class='col-4 float-left text-center'>
-                        <img class='rounded img-fluid pt-3' src='{{ contest.first_girl.photo }}'>
-                    <h6>{{ contest.first_girl.name }}</h6>
-                </div>
-
-                <div class='col-4 mx-auto center-text text-center mt-3'>
-                        <a href='/contest/{{ contest.id  }}'>
-                        <div><button type='button' class='btn btn-dark btn-block' >
-                            Vote!
-                        </button></div>
-                        </a>
-                        <h4 id="countdown{{contest.id}}">До конца голосования: </h4>
-                </div>
-
-                <div class='col-4 float-right text-center'>
-                        <img class='rounded img-fluid pt-3' src='{{ contest.second_girl.photo }}'>
-                    <h6>{{ contest.second_girl.name }}</h6>
-                </div>
-        </div>
-        {% endfor %}
-        {% for contest in active_contests %}
+    <!--    {% for contest in active_contests %}
         <script>
             var countDownDate{{ contest.id }} = new Date("{{ contest.end.isoformat() }}").getTime();
             setInterval(function() {
@@ -59,6 +76,5 @@
                 }
                 }, 1000);
         </script>
-        {% endfor %}
-    </div>
+        {% endfor %} -->
 {% endblock %}

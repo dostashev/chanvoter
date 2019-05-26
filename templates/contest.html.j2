@@ -1,57 +1,67 @@
 {% extends "base.html.j2" %}
+
+{% block head %}
+
+    {{ super() }}
+    
+    <script type='text/javascript'>
+        FIRST_GIRL_ID = {{ first_girl.id }} 
+        SECOND_GIRL_ID = {{ second_girl.id }}
+        CONTEST_ID = {{ contest_id }}
+    </script>
+    
+    <script type='text/javascript' src='/resources/scripts/contest.js'></script>
+
+{% endblock %}
+
 {% block body %}
-<div class='container'>
 
-    <div class='row'>
-        <img  class='rounded mx-auto d-block col-6' alt='Артур Шопенгауэр' src='http://www.cablook.com/wp-content/uploads/2016/04/sade.jpg'>
-    </div>
+    <div class='jumbotron'>
+        <div class='row'>
+            <img  class='rounded mx-auto d-block col-6' src='http://www.cablook.com/wp-content/uploads/2016/04/sade.jpg'>
+        </div>
 
-    <div class='row'>  
-        <div class='container center-block'>
-            <blockquote class="blockquote text-center">
-                <p class="mb-0">Там, где люди будут равными, где не будет существовать различий, - никогда не будет существовать счастья.</p>
-                <footer class="blockquote-footer"><cite>Маркиз Де Сад, первый садист</cite></footer>
-            </blockquote>
+        <div class='row'>  
+            <div class='center-block col-8 mx-auto'>
+                <blockquote class="blockquote text-center">
+                    <p class="mb-0">Там, где люди будут равными, где не будет существовать различий, - никогда не будет существовать счастья.</p>
+                    <footer class="blockquote-footer"><cite>Маркиз Де Сад, первый садист</cite></footer>
+                </blockquote>
+            </div>
         </div>
     </div>
 
-    <form action='/vote' method='POST'>
-
-    <input type='hidden' name='contest_id' value={{ contest_id }} \>
-    <input type='hidden' id='chosen_id' name='chosen_id' \>
-
-    <div class='card-deck mb-3 text-center'>
-    <div id='first-girl' class='card mb-4 shadow-sm'  onclick='document.getElementById("chosen_id").value={{ first_girl.id }}; this.parentNode.submit()'>
-            <div class='card-header'>
-                    <h4 class='my-0 font-weight-normal'> {{ first_girl.name }}</h4>
-            </div>
-
-            <div class='card-body'>
-                instagram widget will use this URL: {{ first_girl.instagram }}
-                this url of profile image: Nothing, nevermind 
-            </div> 
-    </div>
-
-    <div id='second-girl' class='card mb-4 shadow-sm'  onclick='{document.getElementById("chosen_id").value={{ second_girl.id }}; this.parentNode.submit()}'>
-            <div class='card-header'>
-                    <h4 class='my-0 font-weight-normal'>{{ second_girl.name }}</h4>
-            </div>
-
-            <div class='card-body'>
-                instagram widget will use this URL: {{ second_girl.instagram }}
-            </div>
-
-            <div>
-                this url of profile image: Nothing, nevermind 
-            </div>
-    </div>
+    <div class='row col-6 mx-auto justify-content-center'>
+        <h1 class='mt-5'>Актуальные соревнования:</h1>
     </div>
 
     <div class='row'>
-    <p>ur ptivate key:  </p>
-    <input type="text" name="private_key">
-    </div>
-    <!-- </form>
+        <div class='card-deck text-center mt-3 col-8 mx-auto'>
+            <div class='card' id='first-girl-card'>
+                <img src="{{ first_girl.photo }}" class="card-img-top" alt="...">
 
-</div>
+                <div class='card-footer'>
+                    {{ first_girl.name }}
+                </div>
+            </div>
+
+            <div class='card' id='second-girl-card'>
+                <img src="{{ second_girl.photo }}" class="card-img-top" alt="...">
+
+                <div class='card-footer'>
+                    {{ second_girl.name }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class='row'>
+        <div class="input-group mt-3 pb-3 col-8 mx-auto">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1"> > </span>
+            </div>
+            <input id='private-key' type="text" class="form-control" placeholder="Your private key">
+        </div>
+    </div>
+
 {% endblock %}
