@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, make_respo
 import database
 from database import models
 import dbutils
+import rating
 
 from config import Config
 
@@ -88,7 +89,21 @@ def get_balance():
     scope, _ = database.open_db(db_path)
     with scope() as dbsession:
         return str(dbutils.get_balance(dbsession, dbutils.get_address(dbsession, fd['private_key'])))
-    
+
+@app.route("/finish_contest/<int:contest_id>")
+def finish_contest(contest_id):
+    #завершает контест и пересчитывает рейтинг
+    scope, _ = database.open_db(db_path)
+    with scope() as dbsession:
+        votes_a, votes_b = dbutils.get_contest_votes(dbsession, contest_id)
+        rating_a, rating_b = dbutils.get_contest_girls_rating(dbsession, contest_id)
+        delta = rating.get_elo_change(rating_a, rating_b, votes_a, votes_b)
+        contest = dbsession.query(models.Contest).filter(models.Contest.id == contest_id).first()
+        contest.first_girl.ELO += delta
+        contest.second_girl.ELO -= delta
+
+    return "success"
+
 @app.route("/resources/<path:path>")
 def send_resource(path):
     return send_from_directory("resources", path)

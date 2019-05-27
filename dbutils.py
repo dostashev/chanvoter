@@ -13,7 +13,7 @@ def add_coins(dbsession, address, amount):
     dbsession.query(User).filter(User.address == address).first().coins += amount
 
 def check_already_voted(dbsession, address, contest_id):
-    return len(dbsession.query(Vote).filter(Vote.user_addr == address and Vote.contest_id == contest_id).all()) != 0
+    return len(dbsession.query(Vote).filter(Vote.user_addr == address).filter(Vote.contest_id == contest_id).all()) != 0
 
 def check_contest_active(dbsession, contest_id):
     begin, end = dbsession.query(Contest.begin, Contest.end).filter(Contest.id == contest_id).first()
@@ -29,3 +29,11 @@ def get_active_contests(dbsession):
 
 def get_all_girls(dbsession):
     return list(map(serialize,dbsession.query(Girl).all()))
+
+def get_contest_votes(dbsession, contest_id):
+    girls = dbsession.query(Contest.first_girl_id, Contest.second_girl_id).filter(Contest.id == contest_id).first()
+    return list(map(len,(dbsession.query(Vote).filter(Vote.contest_id == contest_id).filter(Vote.chosen_id == x).all() for x in girls)))
+
+def get_contest_girls_rating(dbsession, contest_id):
+    contest = dbsession.query(Contest).filter(Contest.id == contest_id).first()
+    return contest.first_girl.ELO, contest.second_girl.ELO
