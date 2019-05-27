@@ -1,14 +1,28 @@
-from flask import Flask, render_template, request, redirect, url_for, make_response, session, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for, make_response, session, send_from_directory, g
 
 import database
 from database import models
 import dbutils
 import rating
+from functools import wraps
 
 from config import Config
 
 app = Flask(__name__, static_url_path='')
 db_path = 'var/main.db'
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'logged_in' in session.keys():
+            return redirect(url_for('login', next = request.url))
+        return f(*args, **kwargs)
+    return decorated_function
+
+@app.route("/login", methods = ["GET", "POST"])
+def login():
+    session['logged_in'] = True
+    return redirect(next or url_for('index'))
 
 @app.route("/", methods = ["GET", "POST"])
 def index():
@@ -90,6 +104,7 @@ def get_balance():
         return str(dbutils.get_balance(dbsession, dbutils.get_address(dbsession, fd['private_key'])))
 
 @app.route("/admin")
+@login_required
 def send_admin_html():
     scope, _ = database.open_db(db_path)
     with scope() as s: 
