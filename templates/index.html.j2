@@ -44,7 +44,7 @@
                     <a href='/contest/{{ contest.id }}' class='btn btn-lg btn-primary'>Голосовать!</a>
                     
                     <div class='card-text mt-3'>
-                        До конца соревнования осталось <span class='countdown' endtime='{{ contest.end }}'></span>
+                        До конца соревнования осталось <span class='countdown' endtime='{{ contest.end.isoformat() }}'></span>
                     </div>
                 </div>
             </div>            
