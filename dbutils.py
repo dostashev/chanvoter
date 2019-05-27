@@ -29,3 +29,6 @@ def get_active_contests(dbsession):
 
 def get_all_girls(dbsession):
     return list(map(serialize,dbsession.query(Girl).all()))
+
+def get_all_users(dbsession):
+    return list(map(serialize,dbsession.query(User).all()))

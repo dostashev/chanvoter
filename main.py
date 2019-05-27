@@ -45,8 +45,7 @@ def vote():
             return "error: invalid private key"
         if dbutils.check_already_voted(dbsession, user_addr, fd['contest_id']):
             return "error: already voted in this contest"
-        if not dbutils.check_contest_active(dbsession, fd['contest_id']):
-            return "error: inactive contest"
+        if not dbutils.check_contest_active(dbsession, fd['contest_id']): return "error: inactive contest"
         if dbutils.get_balance(dbsession, user_addr) >= Config.COINS_PER_VOTE:
             dbutils.add_coins(dbsession, user_addr, -Config.COINS_PER_VOTE)
             dbsession.add(models.Vote(user_addr = user_addr, contest_id = fd['contest_id'], chosen_id = fd['chosen_id']))
@@ -88,7 +87,19 @@ def get_balance():
     scope, _ = database.open_db(db_path)
     with scope() as dbsession:
         return str(dbutils.get_balance(dbsession, dbutils.get_address(dbsession, fd['private_key'])))
-    
+   
+@app.route("/admin")
+def send_admin_html():
+    scope, _ = database.open_db(db_path)
+    with scope() as s: 
+        return render_template('admin.html.j2', 
+                active_contests = dbutils.get_active_contests(s),
+                girls = dbutils.get_all_girls(s),
+                users = dbutils.get_all_users(s))
+                
+
+    return render_template 
+
 @app.route("/resources/<path:path>")
 def send_resource(path):
     return send_from_directory("resources", path)

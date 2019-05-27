@@ -78,6 +78,7 @@ def hello_rating():
 def send_resource(path):
     return send_from_directory("resources", path)
 
+
 if __name__ == "__main__":
     app.config.update(
         TESTING=True,

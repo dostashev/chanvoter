@@ -6,8 +6,7 @@ girls = [
         'instagram' : 'cloudlet_jt',
         'ELO' : 1500.9
     },
-    {
-        'name' : 'Inna Glushenko',
+    { 'name' : 'Inna Glushenko',
         'instagram' : 'inna_gluschenko',
         'ELO' : 1500.0
     },
@@ -40,8 +39,23 @@ contests = [
 
 users = [
     {
-        'address' : 'root',
-        'private_key' : 'jojo',
+        'address' : '1',
+        'private_key' : '1',
         'coins' : 1000000000
-    }
+    },
+    {
+        'address' : '2',
+        'private_key' : '2',
+        'coins' : 1000000000
+    },
+    {
+        'address' : '3',
+        'private_key' : '3',
+        'coins' : 1000000000
+    },
+    {
+        'address' : '4',
+        'private_key' : '4',
+        'coins' : 1000000000
+    } 
 ]

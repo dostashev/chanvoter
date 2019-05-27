@@ -1,0 +1,81 @@
+{% extends "base.html.j2" %}
+
+{% block body %}
+    <div class='jumbotron'>
+        <h1 class="display-4">Active contests</h1>
+        <table class='table'>
+            <thead>
+                <tr>
+                    <th scope='col'>id</th>
+                    <th scope='col'>first_girl_id</th>
+                    <th scope='col'>second_girl_id</th>
+                    <th scope='col'>begin</th>
+                    <th scope='col'>end</th>
+                    <th scope='col'>#</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for contest in active_contests %}
+                <tr>
+                    <td>{{ contest.id }}</td>
+                    <td>{{ contest.first_girl.id }}</td>
+                    <td>{{ contest.second_girl.id }}</td>
+                    <td>{{ contest.begin }}</td>
+                    <td>{{ contest.end }}</td>
+                    <td><a class='btn btn-primary' href='/finish_contest/{{ contest.id }}'>End & Recalc ELO</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table> 
+    </div>
+    <div class='jumbotron'>
+        <h1 class="display-4">Users</h1>
+        <table class='table'>
+            <thead>
+                <tr>
+                    <th scope='col'>id</th>
+                    <th scope='col'>name</th>
+                    <th scope='col'>private_key</th>
+                    <th scope='col'>coins</th>
+                    <th scope='col'>#</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for user in users  %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.address }}</td>
+                    <td>{{ user.private_key }}</td>
+                    <td>{{ user.coins }}</td>
+                    <td><a class='btn btn-primary'>Watch sth...</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table> 
+    </div>
+    <div class='jumbotron'>
+        <h1 class="display-4">Girls</h1>
+        <table class='table'>
+            <thead>
+                <tr>
+                    <th scope='col'>id</th>
+                    <th scope='col'>name</th>
+                    <th scope='col'>instagram</th>
+                    <th scope='col'>ELO</th>
+                    <th scope='col'>#</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for girl in girls  %}
+                <tr>
+                    <td>{{ girl.id }}</td>
+                    <td>{{ girl.name }}</td>
+                    <td>{{ girl.instagram }}</td>
+                    <td>{{ girl.ELO }}</td>
+                    <td><a class='btn btn-primary'>Watch sth...</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table> 
+    </div>
+{% endblock %}
