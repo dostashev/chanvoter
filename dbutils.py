@@ -7,7 +7,7 @@ def get_balance(dbsession, address):
 
 def get_address(dbsession, private_key):
     user = dbsession.query(User).filter(User.private_key == private_key).first()
-    return user.adress if user != None else ""
+    return user.address if user != None else ""
 
 def add_coins(dbsession, address, amount):
     dbsession.query(User).filter(User.address == address).first().coins += amount
