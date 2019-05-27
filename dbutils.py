@@ -16,7 +16,7 @@ def check_already_voted(dbsession, address, contest_id):
     return len(dbsession.query(Vote).filter(Vote.user_addr == address and Vote.contest_id == contest_id).all()) != 0
 
 def check_contest_active(dbsession, contest_id):
-    begin, end = dbsession.query(Contest.begin, Contest.end).filter(Contest.id == contest_id)
+    begin, end = dbsession.query(Contest.begin, Contest.end).filter(Contest.id == contest_id).first()
     return begin <= datetime.datetime.today() <= end
 
 def get_contest_girls(dbsession, contest_id):
