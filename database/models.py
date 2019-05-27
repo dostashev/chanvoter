@@ -28,6 +28,7 @@ class Girl(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String)
     instagram = Column(String)
+    photo = Column(String)
     ELO = Column(Float)
 
 

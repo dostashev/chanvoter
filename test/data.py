@@ -4,21 +4,28 @@ girls = [
     {
         'name' : 'Julia Tarasenko',
         'instagram' : 'cloudlet_jt',
-        'ELO' : 1500.9
+        'ELO' : 1500.9,
+        'photo' : '/resources/girls/cloudlet_jt.png'
     },
     { 'name' : 'Inna Glushenko',
         'instagram' : 'inna_gluschenko',
-        'ELO' : 1500.0
+        'ELO' : 1500.0,
+        'photo' : '/resources/girls/inna_glushchenko.png'
+
     },
     {
         'name' : 'Eve Stepanova',
         'instagram' : 'stapaschaa',
-        'ELO' : 1499.9
+        'ELO' : 1499.9,
+        'photo' : '/resources/girls/stepaschaa.png'
+
     },
     {
         'name' : 'Neli Blinova',
         'instagram' : '_neonelka_',
-        'ELO' : 1500.0
+        'ELO' : 1500.0,
+        'photo' : '/resources/girls/_neonelka_.png'
+
     }
 ]
 
