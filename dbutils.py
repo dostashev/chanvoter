@@ -30,6 +30,9 @@ def get_active_contests(dbsession):
 def get_all_girls(dbsession):
     return list(map(serialize,dbsession.query(Girl).all()))
 
+def get_all_users(dbsession):
+    return list(map(serialize,dbsession.query(User).all()))
+  
 def get_contest_votes(dbsession, contest_id):
     girls = dbsession.query(Contest.first_girl_id, Contest.second_girl_id).filter(Contest.id == contest_id).first()
     return list(map(len,(dbsession.query(Vote).filter(Vote.contest_id == contest_id).filter(Vote.chosen_id == x).all() for x in girls)))
