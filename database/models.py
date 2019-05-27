@@ -40,6 +40,7 @@ class Contest(Base):
     second_girl_id = Column(Integer, ForeignKey('girls.id'))
     begin = Column(DateTime)
     end = Column(DateTime)
+    finalized = Column(Boolean, default = False)
 
     first_girl = relationship('Girl',foreign_keys=[first_girl_id])
     second_girl = relationship('Girl',foreign_keys=[second_girl_id])

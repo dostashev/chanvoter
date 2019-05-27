@@ -25,7 +25,10 @@ def get_contest_girls(dbsession, contest_id):
 
 def get_active_contests(dbsession):
     cur_time = datetime.datetime.today()
-    return list(dbsession.query(Contest).filter(Contest.begin <= cur_time).filter(Contest.end >= cur_time).all())
+    return list(dbsession.query(Contest).filter(Contest.begin <= cur_time).filter(Contest.end >= cur_time).filter(Contest.finalized == False).all())
+
+def get_finalizable_contests(dbsession):
+    return list(dbsession.query(Contest).filter(Contest.finalized == False).all())
 
 def get_all_girls(dbsession):
     return list(map(serialize,dbsession.query(Girl).all()))

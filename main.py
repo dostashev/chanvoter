@@ -94,7 +94,7 @@ def send_admin_html():
     scope, _ = database.open_db(db_path)
     with scope() as s: 
         return render_template('admin.html.j2', 
-                active_contests = dbutils.get_active_contests(s),
+                active_contests = dbutils.get_finalizable_contests(s),
                 girls = dbutils.get_all_girls(s),
                 users = dbutils.get_all_users(s))
                 
@@ -112,6 +112,7 @@ def finish_contest(contest_id):
         contest = dbsession.query(models.Contest).filter(models.Contest.id == contest_id).first()
         contest.first_girl.ELO += delta
         contest.second_girl.ELO -= delta
+        contest.finalized = True
 
     return "success"
 
