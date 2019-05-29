@@ -1,9 +1,14 @@
 var handle_vote_response = (text) => {
-    if(text != "success") {
-        alert(text);
+    if(text == "error: already voted in this contest")
+    {
+        $("#extra-vote-alert").modal();
     }
-    else {
-        window.location.href = "/";
+    if(text == "error: invalid private key")
+    {
+        $("#wrong-key-alert").modal();
+    }
+    if(text == "success") {
+        $("#success-alert").modal();
     }
 }
 
