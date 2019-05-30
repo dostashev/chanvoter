@@ -9,3 +9,6 @@ def get_elo_change(rating_a, rating_b, res_a, res_b):
     q_b = ELO_BASE ** (rating_b / ELO_DENOMINATOR)
     e_a  = q_a / (q_a + q_b)
     return ELO_K * (res_a / (res_a + res_b) - e_a)
+
+def get_coefficients(bets_a, bets_b):
+    

@@ -43,3 +43,7 @@ def get_contest_votes(dbsession, contest_id):
 def get_contest_girls_rating(dbsession, contest_id):
     contest = dbsession.query(Contest).filter(Contest.id == contest_id).first()
     return contest.first_girl.ELO, contest.second_girl.ELO
+
+def get_contest_bets(dbsession, contest_id):
+    girls = dbsession.query(Contest.first_girl_id, Contest.second_girl_id).filter(Contest.id == contest_id).first()
+    return list(map(sum,(dbsession.query(Bet.amount).filter(Bet.contest_id == contest_id).filter(Bet.chosen_id == x).all() for x in girls)))

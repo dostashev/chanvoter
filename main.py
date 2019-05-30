@@ -123,6 +123,9 @@ def finish_contest(contest_id):
     with scope() as dbsession:
         votes_a, votes_b = dbutils.get_contest_votes(dbsession, contest_id)
         rating_a, rating_b = dbutils.get_contest_girls_rating(dbsession, contest_id)
+        bets_a, bets_b = dbutils.get_contest_bets(dbsession, contest_id)
+        if votes_a == votes_b:
+            
         delta = rating.get_elo_change(rating_a, rating_b, votes_a, votes_b)
         contest = dbsession.query(models.Contest).filter(models.Contest.id == contest_id).first()
         contest.first_girl.ELO += delta
