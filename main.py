@@ -42,9 +42,10 @@ def admin_logout():
 def index():
     #отображает текущие, прошедшие и предстоящие матчи и всякую разную инфу
     scope, _ = database.open_db(db_path)
-    with scope() as dbsession:
-        active_contests = dbutils.get_active_contests(dbsession)
-        return render_template('index.html.j2',active_contests = active_contests)
+    with scope() as s:
+        return render_template('index.html.j2',
+                active_contests = dbutils.get_active_contests(s),
+                bet_contests = dbutils.get_bet_contests(s))
 
 @app.route("/rating", methods = ["GET", "POST"])
 def get_rating():
@@ -126,7 +127,7 @@ def send_admin_html():
     with scope() as s: 
         return render_template('admin.html.j2', 
                 active_contests = dbutils.get_active_contests(s),
-                vote_contests = dbutils.get_vote_contests(s),
+                bet_contests  = dbutils.get_bet_contests(s),
                 girls = dbutils.get_all_girls(s),
                 users = dbutils.get_all_users(s))
                 
