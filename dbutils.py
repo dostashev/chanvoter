@@ -47,3 +47,6 @@ def get_contest_votes(dbsession, contest_id):
 def get_contest_girls_rating(dbsession, contest_id):
     contest = dbsession.query(Contest).filter(Contest.id == contest_id).first()
     return contest.first_girl.ELO, contest.second_girl.ELO
+
+def get_bet_coeffs(dbsession, contest_id):
+    pass
