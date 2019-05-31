@@ -38,6 +38,7 @@ class Contest(Base):
     id = Column(Integer, primary_key=True)
     first_girl_id = Column(Integer, ForeignKey('girls.id'))
     second_girl_id = Column(Integer, ForeignKey('girls.id'))
+    first_girl_win_chance = Column(Float)
     begin = Column(DateTime)
     end = Column(DateTime)
     finalized = Column(Boolean, default = False)
@@ -58,5 +59,16 @@ class Vote(Base):
     contest = relationship('Contest')
 
 
+class Bet(Base):
+    __tablename__ = 'bets'
+
+    id = Column(Integer, primary_key=True)
+    coins = Column(Integer)
+    user_addr = Column(Integer, ForeignKey('users.address'))
+    contest_id = Column(Integer, ForeignKey('contests.id'))
+    chosen_id = Column(Integer, ForeignKey('girls.id'))
+
+    user = relationship('User')
+    contest = relationship('Contest')
 
 

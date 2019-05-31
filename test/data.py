@@ -34,46 +34,52 @@ contests = [
         'first_girl_id' : 1,
         'second_girl_id' : 2,
         'begin' : datetime.datetime(2019,1,1),
-        'end' : datetime.datetime(2019,12,1)
+        'end' : datetime.datetime(2019,12,1),
+        'first_girl_win_chance' : 0.4
     },
     {
         'first_girl_id' : 3,
         'second_girl_id' : 4,
         'begin' : datetime.datetime(2019,1,1),
-        'end' : datetime.datetime(2019,12,1)
+        'end' : datetime.datetime(2019,12,1),
+        'first_girl_win_chance' : 0.8
     },
     {
         'first_girl_id' : 2,
         'second_girl_id' : 4,
         'begin' : datetime.datetime(2019, 6, 15),
-        'end' : datetime.datetime(2019, 6, 17)
+        'end' : datetime.datetime(2019, 6, 17),
+        'first_girl_win_chance' : 0.99
+
     },
     {
         'first_girl_id' : 1,
         'second_girl_id' : 3,
         'begin' : datetime.datetime(2019, 6, 16),
-        'end' : datetime.datetime(2019, 6, 18)
+        'end' : datetime.datetime(2019, 6, 18),
+        'first_girl_win_chance' : 0.3
+
     }
 ]
 
 users = [
     {
-        'address' : '1',
+        'address' : 'user_1',
         'private_key' : '1',
         'coins' : 1000000000
     },
     {
-        'address' : '2',
+        'address' : 'user_2',
         'private_key' : '2',
         'coins' : 1000000000
     },
     {
-        'address' : '3',
+        'address' : 'user_3',
         'private_key' : '3',
         'coins' : 1000000000
     },
     {
-        'address' : '4',
+        'address' : 'user_4',
         'private_key' : '4',
         'coins' : 1000000000
     } 

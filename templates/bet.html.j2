@@ -1,3 +1,4 @@
+
 {% extends "base.html.j2" %}
 
 {% block head %}
@@ -7,10 +8,10 @@
     <script type='text/javascript'>
         FIRST_GIRL_ID = {{ first_girl.id }} 
         SECOND_GIRL_ID = {{ second_girl.id }}
-        CONTEST_ID = {{ contest_id }}
+        CONTEST_ID = {{ contest.id }}
     </script>
     
-    <script type='text/javascript' src='/resources/scripts/bet.js'></script>
+    <script type='text/javascript' src='/resources/scripts/contest.js'></script>
 
 {% endblock %}
 
@@ -41,7 +42,7 @@
                 <img src="{{ first_girl.photo }}" class="card-img-top" alt="...">
 
                 <div class='card-footer'>
-                    {{ first_girl.name }}
+                    {{ first_girl.name }} (x {{ (1 / contest.first_girl_win_chance) | round(2) }})
                 </div>
             </div>
 
@@ -49,17 +50,35 @@
                 <img src="{{ second_girl.photo }}" class="card-img-top" alt="...">
 
                 <div class='card-footer'>
-                    {{ second_girl.name }}
+                    {{ second_girl.name }} (x {{ (1 / (1 - contest.first_girl_win_chance)) | round(2) }})
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="row mt-2">
+        <div class="progress col-8 mx-auto">
+            <div class="progress-bar" role="progressbar" saria-valuenow="100"  aria-valuemin="0" aria-valuemax="100" style="width: {{ contest.first_girl_win_chance * 100 }}%"></div>
+            <div class="progress-bar bg-success" role="progressbar" saria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: {{ (1 - contest.first_girl_win_chance) * 100 }}%"></div>
+        </div>
+    </div>
+
+
     <div class='row'>
         <div class="input-group mt-3 pb-3 col-8 mx-auto">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="basic-addon1"> > </span>
             </div>
-            <input id='private-key' type="text" class="form-control" placeholder="Your private key">
+            <input id='private-key' type="text" class="form-control" placeholder="Ваш приватный ключ">
+        </div>
+    </div>
+
+    <div class='row'>
+        <div class="input-group pb-3 col-8 mx-auto">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1"> $ </span>
+            </div>
+            <input id='private-key' type="text" class="form-control" placeholder="Сумма ставки">
         </div>
     </div>
 

@@ -5,7 +5,6 @@ from database import models
 import dbutils
 import rating
 from functools import wraps
-
 from config import Config
 
 app = Flask(__name__, static_url_path='')
@@ -64,6 +63,13 @@ def contest(contestID):
     scope, _ = database.open_db(db_path)
     with scope() as dbsession:
         return render_template('contest.html.j2',**dbutils.get_contest_girls(dbsession,contestID),contest_id=contestID)
+
+@app.route("/bet/<int:betID>", methods = ["GET", "POST"])
+def bet(betID):
+    scope, _ = database.open_db(db_path)
+    with scope() as dbsession:
+        contest = dbsession.query(models.Contest).filter(models.Contest.id == betID).first()
+        return render_template('bet.html.j2',**dbutils.get_contest_girls(dbsession,betID),contest = contest)
 
 @app.route("/vote", methods = ["POST"])
 def vote():
