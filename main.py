@@ -11,18 +11,32 @@ from config import Config
 app = Flask(__name__, static_url_path='')
 db_path = 'var/main.db'
 
-def login_required(f):
+def admin_login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if 'logged_in' in session.keys():
-            return redirect(url_for('login', next = request.url))
+        if not session.get("admin"):
+            # redirect to admin login page
+            return redirect(url_for('admin_login', next = request.url))
         return f(*args, **kwargs)
     return decorated_function
 
-@app.route("/login", methods = ["GET", "POST"])
-def login():
-    session['logged_in'] = True
-    return redirect(next or url_for('index'))
+@app.route("/admin_login")
+def admin_login():
+    # send admin login form 
+    return render_template("admin_login.html.j2");
+
+@app.route("/admin_auth")
+def admin_auth():
+    # check if admin key is correct
+    if request.args.get("key") == "admin":
+        session["admin"] = True
+        return "success"
+    return "denied"
+
+@app.route("/admin_logout")
+def admin_logout():
+    session["admin"] = False
+    return redirect("/")
 
 @app.route("/", methods = ["GET", "POST"])
 def index():
@@ -103,8 +117,9 @@ def get_balance():
     with scope() as dbsession:
         return str(dbutils.get_balance(dbsession, dbutils.get_address(dbsession, fd['private_key'])))
 
+
 @app.route("/admin")
-@login_required
+@admin_login_required
 def send_admin_html():
     scope, _ = database.open_db(db_path)
     with scope() as s: 
