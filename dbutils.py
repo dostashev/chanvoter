@@ -30,7 +30,7 @@ def get_active_contests(dbsession):
 def get_finalizable_contests(dbsession):
     return list(dbsession.query(Contest).filter(Contest.finalized == False).all())
 
-def get_vote_contests(dbsession):
+def get_bet_contests(dbsession):
     cur_time = datetime.datetime.today()
     return list(dbsession.query(Contest).filter(cur_time < Contest.begin).all())
 

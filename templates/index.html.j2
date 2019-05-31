@@ -58,23 +58,39 @@
     
     {% endfor %}
 
-    <!--    {% for contest in active_contests %}
-        <script>
-            var countDownDate{{ contest.id }} = new Date("{{ contest.end.isoformat() }}").getTime();
-            setInterval(function() {
-                var now = new Date().getTime();
-                var distance = countDownDate{{ contest.id }} - now;
-                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                document.getElementById("countdown{{ contest.id }}").innerHTML = "До конца голосования: " + days + "d " + hours + "h "
-                + minutes + "m " + seconds + "s ";
-                if (distance < 0) {
-                    clearInterval(x);
-                    document.getElementById("countdown{{ contest.id }}").innerHTML = "Закончен";
-                }
-                }, 1000);
-        </script>
-        {% endfor %} -->
+    <div class='row col-6 mx-auto justify-content-center'>
+        <h1 class='mt-5'>Принимаются ставки:</h1>
+    </div>
+
+    {% for contest in bet_contests %}
+
+    <div class='row mt-4'>  
+        <div class='card-deck col-8 mx-auto pb-4 pt-4 bg-light'>
+
+            <div class='card border-dark'>
+                <img src="{{ contest.first_girl.photo }}" class="card-img-top">
+                <div class='card-footer text-center'>{{ contest.first_girl.name }}</div>
+            </div>
+            
+            <div class='card text-center border-dark'>
+                <div class='card-header'>
+                    Сорвенование {{ contest.id }} 
+                </div>
+
+                <div class='card-body'>
+                    <a href='/contest/{{ contest.id }}' class='btn btn-lg btn-primary'>Ставка!</a>
+                    
+                    <div class='card-text mt-3'>
+                        До начала соревнований осталось <span class='waiting-countdown' begintime='{{ contest.begin.isoformat() }}'></span>
+                    </div>
+                </div>
+            </div>            
+
+            <div class='card border-dark'>
+                <img src="{{ contest.second_girl.photo }}" class="card-img-top">
+                <div class='card-footer text-center'>{{ contest.second_girl.name }}</div>
+            </div>
+        </div>
+    </div>    
+    {% endfor %}
 {% endblock %}

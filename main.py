@@ -11,26 +11,41 @@ from config import Config
 app = Flask(__name__, static_url_path='')
 db_path = 'var/main.db'
 
-def login_required(f):
+def admin_login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if 'logged_in' in session.keys():
-            return redirect(url_for('login', next = request.url))
+        if not session.get("admin"):
+            # redirect to admin login page
+            return redirect(url_for('admin_login', next = request.url))
         return f(*args, **kwargs)
     return decorated_function
 
-@app.route("/login", methods = ["GET", "POST"])
-def login():
-    session['logged_in'] = True
-    return redirect(next or url_for('index'))
+@app.route("/admin_login")
+def admin_login():
+    # send admin login form 
+    return render_template("admin_login.html.j2");
+
+@app.route("/admin_auth")
+def admin_auth():
+    # check if admin key is correct
+    if request.args.get("key") == "admin":
+        session["admin"] = True
+        return "success"
+    return "denied"
+
+@app.route("/admin_logout")
+def admin_logout():
+    session["admin"] = False
+    return redirect("/")
 
 @app.route("/", methods = ["GET", "POST"])
 def index():
     #отображает текущие, прошедшие и предстоящие матчи и всякую разную инфу
     scope, _ = database.open_db(db_path)
-    with scope() as dbsession:
-        active_contests = dbutils.get_active_contests(dbsession)
-        return render_template('index.html.j2',active_contests = active_contests)
+    with scope() as s:
+        return render_template('index.html.j2',
+                active_contests = dbutils.get_active_contests(s),
+                bet_contests = dbutils.get_bet_contests(s))
 
 @app.route("/rating", methods = ["GET", "POST"])
 def get_rating():
@@ -40,6 +55,7 @@ def get_rating():
         girls = sorted(dbutils.get_all_girls(dbsession), key=lambda x : -x["ELO"])
         for i in range(len(girls)):
             girls[i]["rating"] = i + 1
+            girls[i]["ELO_rounded"] = round(girls[i]["ELO"])
         return render_template('rating.html.j2', girls = girls)
 
 @app.route("/contest/<int:contestID>", methods = ["GET", "POST"])
@@ -103,14 +119,15 @@ def get_balance():
     with scope() as dbsession:
         return str(dbutils.get_balance(dbsession, dbutils.get_address(dbsession, fd['private_key'])))
 
+
 @app.route("/admin")
-@login_required
+@admin_login_required
 def send_admin_html():
     scope, _ = database.open_db(db_path)
     with scope() as s: 
         return render_template('admin.html.j2', 
                 active_contests = dbutils.get_active_contests(s),
-                vote_contests = dbutils.get_vote_contests(s),
+                bet_contests  = dbutils.get_bet_contests(s),
                 girls = dbutils.get_all_girls(s),
                 users = dbutils.get_all_users(s))
                 
