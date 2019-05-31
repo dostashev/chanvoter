@@ -54,6 +54,7 @@ def get_rating():
         girls = sorted(dbutils.get_all_girls(dbsession), key=lambda x : -x["ELO"])
         for i in range(len(girls)):
             girls[i]["rating"] = i + 1
+            girls[i]["ELO_rounded"] = round(girls[i]["ELO"])
         return render_template('rating.html.j2', girls = girls)
 
 @app.route("/contest/<int:contestID>", methods = ["GET", "POST"])
