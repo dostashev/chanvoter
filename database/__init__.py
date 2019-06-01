@@ -1,8 +1,7 @@
 from contextlib import contextmanager
-from sqlalchemy import create_engine 
+from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
-from database.models import * 
-
+from database.models import *
 """
 USAGE EXAMPLE:
 
@@ -22,6 +21,7 @@ with scope() as session:
 
 # You don't need to commit changes in db, session manager in case of success manage it
 """
+
 
 def open_db(db_path):
     engine = create_engine(f'sqlite:///{db_path}')

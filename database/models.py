@@ -4,8 +4,9 @@ from sqlalchemy.orm import scoped_session, sessionmaker, relationship, backref
 
 Base = declarative_base()
 
+
 class User(Base):
-    __tablename__= 'users'
+    __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True)
     address = Column(String, unique=True)
@@ -41,20 +42,20 @@ class Contest(Base):
     first_girl_win_chance = Column(Float)
     begin = Column(DateTime)
     end = Column(DateTime)
-    finalized = Column(Boolean, default = False)
+    finalized = Column(Boolean, default=False)
 
-    first_girl = relationship('Girl',foreign_keys=[first_girl_id])
-    second_girl = relationship('Girl',foreign_keys=[second_girl_id])
+    first_girl = relationship('Girl', foreign_keys=[first_girl_id])
+    second_girl = relationship('Girl', foreign_keys=[second_girl_id])
 
 
 class Vote(Base):
     __tablename__ = 'votes'
- 
+
     id = Column(Integer, primary_key=True)
     user_addr = Column(Integer, ForeignKey('users.address'))
     contest_id = Column(Integer, ForeignKey('contests.id'))
     chosen_id = Column(Integer, ForeignKey('girls.id'))
-    
+
     user = relationship('User')
     contest = relationship('Contest')
 
@@ -70,5 +71,3 @@ class Bet(Base):
 
     user = relationship('User')
     contest = relationship('Contest')
-
-
