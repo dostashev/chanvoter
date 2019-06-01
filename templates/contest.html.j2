@@ -11,7 +11,7 @@
     </script>
     
     <script type='text/javascript' src='/resources/scripts/contest.js'></script>
-
+    <link rel='stylesheet' type='text/css' href='/resources/styles/op-img.css'>
 {% endblock %}
 
 {% block body %}
@@ -38,15 +38,20 @@
     <div class='row'>
         <div class='card-deck text-center mt-3 col-8 mx-auto'>
             <div class='card' id='first-girl-card'>
-                <img src="{{ first_girl.photo }}" class="card-img-top" alt="...">
-
+                <div class='op-container'>
+                    <img src="{{ first_girl.photo }}" class="card-img-top op-image" alt="...">
+                    <div class='op-middle bg-secondary text-white pl-1 pr-1'><h2>Нажмите чтобы голосовать</h2></div>
+                </div>
                 <div class='card-footer'>
                     {{ first_girl.name }}
                 </div>
             </div>
 
             <div class='card' id='second-girl-card'>
-                <img src="{{ second_girl.photo }}" class="card-img-top" alt="...">
+                <div class='op-container'>
+                    <img src="{{ second_girl.photo }}" class="card-img-top op-image" alt="...">
+                    <div class='op-middle bg-secondary text-white pl-1 pr-1'><h2>Нажмите чтобы голосовать</h2></div>
+                </div>
 
                 <div class='card-footer'>
                     {{ second_girl.name }}

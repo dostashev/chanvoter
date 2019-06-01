@@ -1,2 +1,8 @@
 class Config:
-    COINS_PER_VOTE = 10000
+    COINS_PER_VOTE = 10_000
+
+    ADMIN_PASS = "admin"
+
+
+
+
