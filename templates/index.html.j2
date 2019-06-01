@@ -44,7 +44,7 @@
                     <a href='/contest/{{ contest.id }}' class='btn btn-lg btn-primary'>Голосовать!</a>
                     
                     <div class='card-text mt-3'>
-                        До конца соревнования осталось <span class='countdown' endtime='{{ contest.end.isoformat() }}'></span>
+                        <h4>До конца соревнования осталось <span class='countdown badge badge-primary' endtime='{{ contest.end.isoformat() }}'></span></h4>
                     </div>
                 </div>
             </div>            
@@ -81,7 +81,7 @@
                     <a href='/bet/{{ contest.id }}' class='btn btn-lg btn-primary'>Ставка!</a>
                     
                     <div class='card-text mt-3'>
-                        До начала соревнований осталось <span class='waiting-countdown' begintime='{{ contest.begin.isoformat() }}'></span>
+                        <h4>До начала соревнований осталось <span class='badge badge-primary waiting-countdown' begintime='{{ contest.begin.isoformat() }}'></span></h4>
                     </div>
                 </div>
             </div>            

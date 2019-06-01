@@ -9,7 +9,7 @@ var date_diff_to_str = () => {
     var ss = Math.floor(msec / 1000);
     msec -= ss * 1000;
 
-    return `${dd} д., ${hh} ч., ${mm} м., ${ss} с.`;
+    return `${dd} д, ${hh} ч, ${mm} м`;
 }
 
 var updateCountdown = (countdown) => {
