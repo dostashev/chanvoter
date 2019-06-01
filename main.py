@@ -69,7 +69,8 @@ def bet(betID):
     scope, _ = database.open_db(db_path)
     with scope() as dbsession:
         contest = dbsession.query(models.Contest).filter(models.Contest.id == betID).first()
-        return render_template('bet.html.j2',**dbutils.get_contest_girls(dbsession,betID),contest = contest)
+        k1, k2 = dbutils.get_bet_coeffs(dbsession, contest.id)
+        return render_template('bet.html.j2',**dbutils.get_contest_girls(dbsession,betID),contest = contest, k1=k1, k2=k2)
 
 @app.route("/vote", methods = ["POST"])
 def vote():
@@ -114,8 +115,40 @@ def new_transaction():
 
 @app.route("/new_bet", methods = ["POST"])
 def new_bet():
-    #принимает форму, делает ставочку, возвращает информацию об успехе
-    pass
+    #делает ставочку, возвращает информацию об успехе
+    #все вопросы к этому придурку: D34DStone
+    scope, _ = database.open_db(db_path)
+
+    try:
+        coins = request.args["coins"]
+        coins = int(coins)
+    except ValueError:
+        return "error: invalid amount of coins"
+
+    with scope() as s:
+        user = dbutils.get_address(s, request.args.get("private_key"))
+
+        if not user:
+           return "error: invalid private key"
+
+        balance = dbutils.get_balance(s, user)
+
+        if int(request.args["coins"]) > balance:
+            return "error: not enough of money"
+
+        if dbutils.check_already_bet(s, user, request.args["contest_id"]):
+            return "error: you have already made a bet"
+
+        bet = models.Bet(
+                coins = int(request.args["coins"]),
+                user_addr = user,
+                contest_id = request.args["contest_id"],
+                chosen_id = request.args["chosen_id"]
+            )
+        s.add(bet)
+
+        return "success"
+
 
 @app.route("/get_balance", methods = ["GET", "POST"])
 def get_balance():

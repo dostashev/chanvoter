@@ -15,6 +15,9 @@ def add_coins(dbsession, address, amount):
 def check_already_voted(dbsession, address, contest_id):
     return len(dbsession.query(Vote).filter(Vote.user_addr == address).filter(Vote.contest_id == contest_id).all()) != 0
 
+def check_already_bet(dbsession, address, contest_id):
+    return len(dbsession.query(Bet).filter(Bet.user_addr == address).filter(Bet.contest_id == contest_id).all()) != 0
+
 def check_contest_active(dbsession, contest_id):
     begin, end = dbsession.query(Contest.begin, Contest.end).filter(Contest.id == contest_id).first()
     return begin <= datetime.datetime.today() <= end
@@ -49,4 +52,21 @@ def get_contest_girls_rating(dbsession, contest_id):
     return contest.first_girl.ELO, contest.second_girl.ELO
 
 def get_bet_coeffs(dbsession, contest_id):
-    pass
+    contest = dbsession.query(Contest).filter(Contest.id == contest_id).first()
+    contest_bets = dbsession.query(Bet).filter(Bet.contest_id == contest.id)
+    first_girl_bets = contest_bets.filter(Bet.chosen_id == contest.first_girl.id).all()
+    second_girl_bets = contest_bets.filter(Bet.chosen_id == contest.second_girl.id).all()
+    
+    first_girl_sum = 0
+    for bet in first_girl_bets:
+        first_girl_sum += bet.coins
+
+    second_girl_sum = 0
+    for bet in second_girl_bets:
+        second_girl_sum += bet.coins
+
+    ss = first_girl_sum + second_girl_sum
+    k1 = 'Nan' if first_girl_sum == 0 else round(ss / first_girl_sum, 2)
+    k2 = 'Nan' if second_girl_sum == 0 else round(ss / second_girl_sum, 2)
+
+    return k1, k2 
