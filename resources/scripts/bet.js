@@ -1,6 +1,5 @@
 var handle_vote_response = (text) => {
-
-    if(text == "error: already voted in this contest")
+    if(text == "error: you have already made a bet")
     {
         $("#extra-vote-alert").modal();
     }

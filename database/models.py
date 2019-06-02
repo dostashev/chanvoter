@@ -68,6 +68,8 @@ class Bet(Base):
     user_addr = Column(Integer, ForeignKey('users.address'))
     contest_id = Column(Integer, ForeignKey('contests.id'))
     chosen_id = Column(Integer, ForeignKey('girls.id'))
+    finalized = Column(Boolean, default=False)
+    profit = Column(Integer, default=0)
 
     user = relationship('User')
     contest = relationship('Contest')

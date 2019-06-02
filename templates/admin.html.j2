@@ -40,6 +40,7 @@
                     <th scope='col'>second_girl_id</th>
                     <th scope='col'>begin</th>
                     <th scope='col'>end</th>
+                    <th scope='col'>#</th>
                 </tr>
             </thead>
             <tbody>
@@ -50,6 +51,7 @@
                     <td>{{ contest.second_girl.id }}</td>
                     <td>{{ contest.begin }}</td>
                     <td>{{ contest.end }}</td>
+                    <td><a class='btn btn-primary' href='/begin_contest/{{ contest.id }}'>Начать соревнование!</a></td>
                 </tr>
             {% endfor %}
             </tbody>

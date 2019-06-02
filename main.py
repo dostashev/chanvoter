@@ -172,6 +172,8 @@ def new_bet():
                          user_addr=user,
                          contest_id=request.args["contest_id"],
                          chosen_id=request.args["chosen_id"])
+
+        dbutils.add_coins(s, user, -int(request.args["coins"]))
         s.add(bet)
 
         return "success"
@@ -202,6 +204,34 @@ def send_admin_html():
     return render_template
 
 
+@app.route("/profile/<string:private_key>")
+def profile(private_key):
+    scope, _ = database.open_db(db_path)
+    with scope() as s:
+        user = dbutils.get_address(s, private_key)
+
+        if not user:
+            return "404, Bro :(", 404 
+
+        balance = dbutils.get_balance(s, user)
+
+        return render_template('profile.html.j2',
+                user_addr = user,
+                balance = balance,
+                votes = dbutils.get_user_votes(s, user)[:15],
+                bets = dbutils.get_user_bets(s, user)[:15],
+                girls_dict = dbutils.get_all_girls_mapped(s))
+        
+
+@app.route("/begin_contest/<int:contest_id>")
+def begin_contest(contest_id):
+    scope, _ = database.open_db(db_path)
+    with scope() as dbsession:
+        dbutils.begin_contest(dbsession, contest_id)
+        
+    return "success"
+
+
 @app.route("/finish_contest/<int:contest_id>")
 def finish_contest(contest_id):
     #завершает контест и пересчитывает рейтинг
@@ -216,6 +246,14 @@ def finish_contest(contest_id):
         contest.first_girl.ELO += delta
         contest.second_girl.ELO -= delta
         contest.finalized = True
+       
+        winner_id = -1
+        if votes_a > votes_b:
+            winner_id = contest.first_girl_id
+        elif vites_a < votes_b:
+            winner_id = contest.second_girl_id 
+
+        dbutils.close_bets(dbsession, contest_id, winner_id)
 
     return "success"
 
