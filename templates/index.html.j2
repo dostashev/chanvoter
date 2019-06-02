@@ -6,13 +6,15 @@
 {% endblock %}
 
 {% block body %}
-    <div class='jumbotron'>
+    <div class='jumbotron text-center'>
         <div class='row'>
-            <img  class='rounded mx-auto d-block col-6' src='http://www.izbrannoe.com/upload/resize_cache/iblock/98c/705_391_2/98c13dcb42bf7427cef55b1c16771529.jpg'>
+            <div class='img-wrapper col-lg-6 col-sm-12 d-block mx-auto'>
+                <img  class='img rounded' style='width: 100%; height: auto;' src='http://www.izbrannoe.com/upload/resize_cache/iblock/98c/705_391_2/98c13dcb42bf7427cef55b1c16771529.jpg'>
+            </div>
         </div>
 
-        <div class='row'>  
-            <div class='center-block col-8 mx-auto'>
+        <div class='row mt-2'>  
+            <div class='center-block col-lg-8 col-sm-12 mx-auto'>
                 <blockquote class="blockquote text-center">
                 <p class="mb-0">Низкорослый, узкоплечий, широкобедрый пол мог назвать прекрасным только отуманенный половым побуждением рассудок мужчины: вся его красота и кроется в этом побуждении.</p>
                 <footer class="blockquote-footer"><cite>Артур Шопенгауэр, убеждённый женоненавистник</cite></footer>
@@ -27,7 +29,7 @@
 
     {% for contest in active_contests %}
 
-    <div class='row mt-4'>  
+    <div class='row col-12 mt-4'>  
         <div class='card-deck col-8 mx-auto pb-4 pt-4 bg-light'>
 
             <div class='card border-dark'>
@@ -64,7 +66,7 @@
 
     {% for contest in bet_contests %}
 
-    <div class='row mt-4'>  
+    <div class='row col-12 mt-4'>  
         <div class='card-deck col-8 mx-auto pb-4 pt-4 bg-light'>
 
             <div class='card border-dark'>
