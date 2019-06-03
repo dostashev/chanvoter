@@ -32,6 +32,8 @@ var submit_vote = (chosen_girl_id)  => {
 }
 
 window.addEventListener('load', () => { 
+    document.getElementById('private-key').value = PRIVATE_KEY;
+
     document.getElementById('first-girl-card').addEventListener('click', () => submit_vote(FIRST_GIRL_ID));
     document.getElementById('second-girl-card').addEventListener('click', () => submit_vote(SECOND_GIRL_ID));
 });

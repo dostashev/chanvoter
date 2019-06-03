@@ -120,7 +120,8 @@ def contest(contestID):
         return render_template('contest.html.j2',
                                **dbutils.get_contest_girls(
                                    dbsession, contestID),
-                               contest_id=contestID)
+                               contest_id=contestID,
+                               private_key=session["private_key"])
 
 
 @app.route("/bet/<int:betID>", methods=["GET", "POST"])
@@ -134,6 +135,7 @@ def bet(betID):
         return render_template('bet.html.j2',
                                **dbutils.get_contest_girls(dbsession, betID),
                                contest=contest,
+                               private_key=session["private_key"],
                                k1=k1,
                                k2=k2)
 
@@ -256,10 +258,11 @@ def send_admin_html():
     return render_template
 
 
-@app.route("/profile/<string:private_key>")
+@app.route("/profile")
 @login_required
-def profile(private_key):
+def profile():
     scope, _ = database.open_db(db_path)
+    private_key = session["private_key"]
     with scope() as s:
         user = dbutils.get_address(s, private_key)
 

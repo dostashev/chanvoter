@@ -12,7 +12,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
-    <script type='text/javascript' src='/resources/scripts/base.js'></script>
     {% endblock %}
 </head>
 
@@ -48,8 +47,7 @@
     </ul>
 
     <div class="form-inline my-2 my-lg-0">
-        <input id='profile-form' type='text' class="form-control mr-sm-2" placeholder="Приватный ключ">
-        <a id='profile-btn' class="btn btn-outline-primary my-2 my-sm-0" type="submit">Профиль</a>
+        <a href='/profile' class="btn btn-outline-primary my-2 my-sm-0" type="submit">Профиль</a>
         <a href="/logout" class="btn btn-outline-danger my-2 ml-2" type="submit">Выйти</a>
     </div>
   </div>
