@@ -17,6 +17,7 @@
 </head>
 
 <body>
+{% block header %}
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="/">Chanvoter</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,9 +50,12 @@
     <div class="form-inline my-2 my-lg-0">
         <input id='profile-form' type='text' class="form-control mr-sm-2" placeholder="Приватный ключ">
         <a id='profile-btn' class="btn btn-outline-primary my-2 my-sm-0" type="submit">Профиль</a>
+        <a href="/logout" class="btn btn-outline-danger my-2 ml-2" type="submit">Выйти</a>
     </div>
   </div>
 </nav>
+{% endblock %}
+
     {% block body %}
     {% endblock %}
 </body>

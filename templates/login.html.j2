@@ -1,0 +1,90 @@
+{% extends "base.html.j2" %}
+
+{% block header %}
+{% endblock %}
+
+{% block head %}
+    {{ super() }} 
+    <script type='text/javascript' src='/resources/scripts/login.js'></script>
+{% endblock %}
+
+{% block body %}
+<div class='container'>
+    <div class='text-center'>
+        <h1 class='h1'>Авторизация</h1>
+    </div>
+
+    <div class='border col-lg-6 col-sm-8 pb-3 pt-3 d-block mx-auto mt-4'>
+        <div class='form-group'>
+            <input type='text' id='private-key-form' class='form-control' placeholder='Ваш приватный ключ'>
+            <small class='form-text text-muted'>Никогда никому не говорите свой приватный ключ. Особенно девушкам...</small>
+        </div>
+        <button class='btn btn-primary' id='login-btn'>Авторизироваться!</button>
+    </div>
+
+    <div class='jumbotron mt-5 text-center'>
+        <div class='display-4'>У меня нет аккаунта!</div>
+        <p class='lead'>Тут вы узнаете как получить аккаунт.</p>
+        <hr class="my-4">
+       
+        <p class="h5">
+        Прежде чем запросить создание аккаунта, вам надо кое-что <b>Уяснить</b>:
+        </p>
+
+        <ul class='text-left mt-3'>
+            <li>Убедитесь что вы не девушка. Девушки могут писать по ссылке ниже, не буду скрывать, я буду этому очень рад, но аккаунт я не дам.</li>
+            <li>Вы не будете форсить этот сайт в женском окружении.</li>
+            <li>Вы осознаете несерьезность этой затеи и не будете воспринимать что-либо на этом сайте близко к сердцу.</li>
+        </ul>
+
+        <p class='text-muted mt-4'>Вы можете просить аккаунты за своих друзей, если они стесняются написать мне :) </p>
+        <script type="text/javascript">(function() {var script=document.createElement("script");script.type="text/javascript";script.async =true;script.src="//telegram.im/widget-button/index.php?id=@torianik_george";document.getElementsByTagName("head")[0].appendChild(script);})();</script>
+        <a href="https://telegram.im/@torianik_george" target="_blank" class="col-6 telegramim_button telegramim_shadow telegramim_pulse d-block mx-auto" style="font-size:30px;width:446px;background:#27A5E7;box-shadow:1px 1px 5px #27A5E7;color:#FFFFFF;border-radius:100px;" title=""><i></i> Написать нам</a>
+    </div>
+
+
+    <div class='jumbotron mt-5 text-center'>
+        <div class='display-4'>Что это вообще такое?</div>
+        <p class='lead'> - Филосовский вопрос.</p>
+        <hr class="my-4">
+        <p class="h5">
+        Это сайт, который поможет ответить на вопрос, терзающий авторов уже почти год: Кто самая лучшая девочка тусовки <b>4527</b>?
+        </p>
+        <p class="h5">
+            Что тут можно?
+        </p>
+
+        <ul class='text-left mt-3'>
+            <li>Учавствовать в ежедневных соревниваниях, решая для себя, как из двух данных девушек <b>вам</b> симпатична больше. Ваши голоса влияют на рейтинг, в основу которого положена щахматная система ELO.</li>
+            <li>Делать ставки на то, какая из двух девушек станет более популярной, преумножить свой капитал на сайте. Для особо удачливых и расчетливых мы приготовили <b><font color='red'>П</font>риз</b>.</li>
+            <li>За бутылки пива и прочего алкоголя, купленые одному из админов, произвоить произвольные манипуляции с сайтом. Поднять кого-то в рейтинг, опустить etc.</li>     
+            <li><s>Играть за зомби. Убивать зомби. Выпускать кишки 10 минут. Да сколько же у тебя кишок?!</s></li>
+        </ul>
+
+        <p class='text-muted mt-4'>До сих пор не решились, надо ли оно вам? Напишите мне, я докажу что оно вам надо.</p>
+        <script type="text/javascript">(function() {var script=document.createElement("script");script.type="text/javascript";script.async =true;script.src="//telegram.im/widget-button/index.php?id=@torianik_george";document.getElementsByTagName("head")[0].appendChild(script);})();</script>
+        <a href="https://telegram.im/@torianik_george" target="_blank" class="col-6 telegramim_button telegramim_shadow telegramim_pulse d-block mx-auto" style="font-size:30px;width:446px;background:#27A5E7;box-shadow:1px 1px 5px #27A5E7;color:#FFFFFF;border-radius:100px;" title=""><i></i> Написать нам</a>
+    </div> 
+</div>
+
+
+<!-- Alerts form r there -->
+<div class="modal" tabindex="-1" role="dialog" id='wrong-key-alert'>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Ошибка</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Вы ввели некорретный приватный ключ.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

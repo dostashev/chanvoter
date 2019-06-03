@@ -22,28 +22,72 @@ def admin_login_required(f):
     return decorated_function
 
 
+def login_required(f):
+    @wraps(f)
+    def decorated_f(*args, **kwargs):
+        if not session.get("private_key"):
+            return redirect(url_for('login', next=request.url))
+        return f(*args, **kwargs)
+
+    return decorated_f
+
+
 @app.route("/admin_login")
 def admin_login():
     # send admin login form
     return render_template("admin_login.html.j2")
 
 
+@app.route("/login")
+def login():
+    if session.get("private_key"):
+        return redirect('/')
+    else:
+        return render_template("login.html.j2")
+
+
 @app.route("/admin_auth")
 def admin_auth():
-    # check if admin key is correct
+    """
+    check if admin key is correct
+
+    TODO: delete hardcode make config field where you can set admin secrets
+    """
     if request.args.get("key") == "admin":
         session["admin"] = True
         return "success"
     return "denied"
 
 
+@app.route("/auth", methods=['POST'])
+def auth():
+    scope, _ = database.open_db(db_path)
+    private_key = request.args.get("private_key")
+    with scope() as s:
+        user = dbutils.get_address(s, private_key)
+        if not user:
+            return "denied"
+        
+        session["private_key"] = private_key
+        return "success"
+
+
 @app.route("/admin_logout")
+@admin_login_required
 def admin_logout():
-    session["admin"] = False
+    del session['admin']
     return redirect("/")
 
 
+@app.route("/logout")
+@login_required
+def logout():
+    del session['private_key']
+    return redirect('/login')
+
+
 @app.route("/", methods=["GET", "POST"])
+@login_required
 def index():
     #отображает текущие, прошедшие и предстоящие матчи и всякую разную инфу
     scope, _ = database.open_db(db_path)
@@ -54,6 +98,7 @@ def index():
 
 
 @app.route("/rating", methods=["GET", "POST"])
+@login_required
 def get_rating():
     #отображает текущую таблицу рейтинга
     scope, _ = database.open_db(db_path)
@@ -67,6 +112,7 @@ def get_rating():
 
 
 @app.route("/contest/<int:contestID>", methods=["GET", "POST"])
+@login_required
 def contest(contestID):
     #отображает информацию о матче, предлагает проголосовать или сделать ставку
     scope, _ = database.open_db(db_path)
@@ -78,6 +124,7 @@ def contest(contestID):
 
 
 @app.route("/bet/<int:betID>", methods=["GET", "POST"])
+@login_required
 def bet(betID):
     scope, _ = database.open_db(db_path)
     with scope() as dbsession:
@@ -92,6 +139,7 @@ def bet(betID):
 
 
 @app.route("/vote", methods=["POST"])
+@login_required
 def vote():
     #принимает форму, возвращает информацию об успехе
     fd = request.args
@@ -114,12 +162,14 @@ def vote():
 
 
 @app.route("/transactions", methods=["GET", "POST"])
+@login_required
 def transactions():
     #отображает список транзакций и предлагает сделать оную
     pass
 
 
 @app.route('/new_transaction', methods=["POST"])
+@login_required
 def new_transaction():
     #принимает форму, делает дела, возвращает информацию об успехе
     fd = request.form
@@ -143,6 +193,7 @@ def new_transaction():
 
 
 @app.route("/new_bet", methods=["POST"])
+@login_required
 def new_bet():
     #делает ставочку, возвращает информацию об успехе
     #все вопросы к этому придурку: D34DStone
@@ -180,6 +231,7 @@ def new_bet():
 
 
 @app.route("/get_balance", methods=["GET", "POST"])
+@login_required
 def get_balance():
     #принимает форму, отдает баланс кошелька
     fd = request.form
@@ -205,6 +257,7 @@ def send_admin_html():
 
 
 @app.route("/profile/<string:private_key>")
+@login_required
 def profile(private_key):
     scope, _ = database.open_db(db_path)
     with scope() as s:
@@ -224,6 +277,7 @@ def profile(private_key):
         
 
 @app.route("/begin_contest/<int:contest_id>")
+@admin_login_required
 def begin_contest(contest_id):
     scope, _ = database.open_db(db_path)
     with scope() as dbsession:
@@ -233,6 +287,7 @@ def begin_contest(contest_id):
 
 
 @app.route("/finish_contest/<int:contest_id>")
+@admin_login_required
 def finish_contest(contest_id):
     #завершает контест и пересчитывает рейтинг
     scope, _ = database.open_db(db_path)
