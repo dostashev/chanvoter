@@ -30,14 +30,14 @@
     {% for contest in active_contests %}
 
     <div class='row col-12 mt-4'>  
-        <div class='card-deck col-8 mx-auto pb-4 pt-4 bg-light'>
+        <div class='card-deck col-lg-8 mx-auto pb-4 pt-4 bg-light'>
 
-            <div class='card border-dark'>
+            <div class='card border-dark ml-4'>
                 <img src="{{ contest.first_girl.photo }}" class="card-img-top">
                 <div class='card-footer text-center'>{{ contest.first_girl.name }}</div>
             </div>
             
-            <div class='card text-center border-dark'>
+            <div class='card text-center border-dark ml-4'>
                 <div class='card-header'>
                     Сорвенование {{ contest.id }} 
                 </div>
@@ -51,7 +51,7 @@
                 </div>
             </div>            
 
-            <div class='card border-dark'>
+            <div class='card border-dark ml-4'>
                 <img src="{{ contest.second_girl.photo }}" class="card-img-top">
                 <div class='card-footer text-center'>{{ contest.second_girl.name }}</div>
             </div>
@@ -67,14 +67,14 @@
     {% for contest in bet_contests %}
 
     <div class='row col-12 mt-4'>  
-        <div class='card-deck col-8 mx-auto pb-4 pt-4 bg-light'>
+        <div class='card-deck col-lg-8 col-sm-12 mx-auto pb-4 pt-4 bg-light'>
 
-            <div class='card border-dark'>
+            <div class='card border-dark ml-4'>
                 <img src="{{ contest.first_girl.photo }}" class="card-img-top">
                 <div class='card-footer text-center'>{{ contest.first_girl.name }}</div>
             </div>
             
-            <div class='card text-center border-dark'>
+            <div class='card text-center border-dark ml-4'>
                 <div class='card-header'>
                     Сорвенование {{ contest.id }} 
                 </div>
@@ -88,7 +88,7 @@
                 </div>
             </div>            
 
-            <div class='card border-dark'>
+            <div class='card border-dark ml-4'>
                 <img src="{{ contest.second_girl.photo }}" class="card-img-top">
                 <div class='card-footer text-center'>{{ contest.second_girl.name }}</div>
             </div>

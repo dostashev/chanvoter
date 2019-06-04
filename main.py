@@ -67,7 +67,7 @@ def auth():
         user = dbutils.get_address(s, private_key)
         if not user:
             return "denied"
-        
+
         session["private_key"] = private_key
         return "success"
 
@@ -267,17 +267,17 @@ def profile():
         user = dbutils.get_address(s, private_key)
 
         if not user:
-            return "404, Bro :(", 404 
+            return "404, Bro :(", 404
 
         balance = dbutils.get_balance(s, user)
 
         return render_template('profile.html.j2',
-                user_addr = user,
-                balance = balance,
-                votes = dbutils.get_user_votes(s, user)[:15],
-                bets = dbutils.get_user_bets(s, user)[:15],
-                girls_dict = dbutils.get_all_girls_mapped(s))
-        
+                               user_addr=user,
+                               balance=balance,
+                               votes=dbutils.get_user_votes(s, user)[:15],
+                               bets=dbutils.get_user_bets(s, user)[:15],
+                               girls_dict=dbutils.get_all_girls_mapped(s))
+
 
 @app.route("/begin_contest/<int:contest_id>")
 @admin_login_required
@@ -285,7 +285,7 @@ def begin_contest(contest_id):
     scope, _ = database.open_db(db_path)
     with scope() as dbsession:
         dbutils.begin_contest(dbsession, contest_id)
-        
+
     return "success"
 
 
@@ -304,12 +304,12 @@ def finish_contest(contest_id):
         contest.first_girl.ELO += delta
         contest.second_girl.ELO -= delta
         contest.finalized = True
-       
+
         winner_id = -1
         if votes_a > votes_b:
             winner_id = contest.first_girl_id
         elif vites_a < votes_b:
-            winner_id = contest.second_girl_id 
+            winner_id = contest.second_girl_id
 
         dbutils.close_bets(dbsession, contest_id, winner_id)
 
