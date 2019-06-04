@@ -1,32 +1,32 @@
-{% extends "base.html.j2" %}
+    {% extends "base.html.j2" %}
 
-{% block body %}
-<div class='container mt-4'>
-    <div class='display-4 mx-auto text-center'>
-        Пользователь <b>{{ user_addr }}</b>
+    {% block body %}
+    <div class='container mt-4'>
+        <div class='display-4 mx-auto text-center'>
+            Пользователь <b>{{ user_addr }}</b>
+        </div>
+        <div class='h4 mx-auto text-center'>
+            Баланс: <b>{{ balance }}</b> монет
+        </div>
     </div>
-    <div class='h4 mx-auto text-center'>
-        Баланс: <b>{{ balance }}</b> монет
-    </div>
-</div>
 
 
-<div class='jumbotron mt-5'>
-    <h1 class="display-4">Ваши ставки</h1>
-    <table class='table'>
-        <thead>
-            <tr>
-                <th scope='col'>Ставка</th>
-                <th scope='col'>Фаворит</th>
-                <th scope='col'>Ставка</th>
-                <th scope='col'>Статус</th>
-                <th scope='col'>Доход</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for bet in bets %}
-            <tr class='
-                {% if not bet.finalized %}
+    <div class='jumbotron mt-5'>
+        <h1 class="display-4">Ваши ставки</h1>
+        <table class='table'>
+            <thead>
+                <tr>
+                    <th scope='col'>Ставка</th>
+                    <th scope='col'>Фаворит</th>
+                    <th scope='col'>Ставка</th>
+                    <th scope='col'>Статус</th>
+                    <th scope='col'>Доход</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bet in bets %}
+                <tr class='
+                    {% if not bet.finalized %}
                     table-warning    
                 {% elif bet.profit >= 0 %}
                     table-success
@@ -52,7 +52,6 @@
             <tr>
                 <th scope='col'>Голосование</th>
                 <th scope='col'>Фаворит</th>
-                <th scope='col'>Статус</th>
             </tr>
         </thead>
         <tbody>
@@ -60,7 +59,6 @@
             <tr>
                 <td><a href='/contest/{{ vote.contest_id  }}'>Голосование {{ vote.contest_id }}</a></td>
                 <td>{{ girls_dict[vote.chosen_id].name }}</td>
-                <td>Не реализовано :(</td>
             </tr>
             {% endfor %}
         </tbody>

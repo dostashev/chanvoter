@@ -8,7 +8,8 @@ from functools import wraps
 from config import Config
 
 app = Flask(__name__, static_url_path='')
-db_path = 'var/main.db'
+app.config.update(Config.FLASK_CONFIG)
+db_path = Config.FLASK_CONFIG["SQLALCHEMY_DATABASE_URI"]
 
 
 def admin_login_required(f):
@@ -26,7 +27,7 @@ def login_required(f):
     @wraps(f)
     def decorated_f(*args, **kwargs):
         if not session.get("private_key"):
-            return redirect(url_for('login', next=request.url))
+            return redirect('login')
         return f(*args, **kwargs)
 
     return decorated_f
@@ -322,5 +323,4 @@ def send_resource(path):
 
 
 if __name__ == "__main__":
-    app.secret_key = "loadsecretkey"
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000)
