@@ -287,7 +287,7 @@ def begin_contest(contest_id):
     with scope() as dbsession:
         dbutils.begin_contest(dbsession, contest_id)
 
-    return "success"
+    return redirect('/admin')
 
 
 @app.route("/finish_contest/<int:contest_id>")
@@ -309,12 +309,12 @@ def finish_contest(contest_id):
         winner_id = -1
         if votes_a > votes_b:
             winner_id = contest.first_girl_id
-        elif vites_a < votes_b:
+        elif votes_a < votes_b:
             winner_id = contest.second_girl_id
 
         dbutils.close_bets(dbsession, contest_id, winner_id)
-
-    return "success"
+    
+    return redirect('/admin')
 
 
 @app.route("/resources/<path:path>")

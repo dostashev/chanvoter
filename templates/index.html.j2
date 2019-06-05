@@ -27,6 +27,12 @@
         <h1 class='mt-5'>Актуальные соревнования:</h1>
     </div>
 
+    {% if not active_contests %}
+        <div class='col-12 container text-center'>
+            <p class='text-muted'>Пока-что тут ничего нет, но скоро оно обязательно появится...</p>
+        </div>
+    {% endif %}
+
     {% for contest in active_contests %}
 
     <div class='row col-12 mt-4'>  
@@ -63,6 +69,12 @@
     <div class='row col-6 mx-auto justify-content-center'>
         <h1 class='mt-5'>Принимаются ставки:</h1>
     </div>
+
+    {% if not bet_contests %}
+        <div class='col-12 container text-center'>
+            <p class='text-muted'>Пока-что тут ничего нет, но скоро оно обязательно появится...</p>
+        </div>
+    {% endif %}
 
     {% for contest in bet_contests %}
 

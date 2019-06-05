@@ -2,7 +2,7 @@
 
     {% block body %}
     <div class='container mt-4'>
-        <div class='display-4 mx-auto text-center'>
+        <div class='h1 mx-auto text-center'>
             Пользователь <b>{{ user_addr }}</b>
         </div>
         <div class='h4 mx-auto text-center'>
@@ -10,13 +10,13 @@
         </div>
     </div>
 
-
-    <div class='jumbotron mt-5'>
-        <h1 class="display-4">Ваши ставки</h1>
+    <div class='container col-12 mt-5'>
+        <h1 class="h1">Ваши ставки</h1>
+        <div class='table-responsive'>
         <table class='table'>
             <thead>
                 <tr>
-                    <th scope='col'>Ставка</th>
+                    <th scope='col'>url</th>
                     <th scope='col'>Фаворит</th>
                     <th scope='col'>Ставка</th>
                     <th scope='col'>Статус</th>
@@ -34,34 +34,37 @@
                     table-danger
                 {% endif %}
                 '>
-                <td><a href='/bet/{{ bet.contest_id  }}'>Ставка {{ bet.contest_id }}</a></td>
+                <td><a href='/bet/{{ bet.contest_id  }}'>/bet/{{ bet.contest_id }}</a></td>
                 <td>{{ girls_dict[bet.chosen_id].name }}</td>
                 <td>{{ bet.coins }}</td>
-                <td>{% if bet.finalized %} Закончено {% else %} Ожидание {% endif %}</td>
+                <td>{% if bet.finalized %} Завершен  {% else %} Ожидание  {% endif %}</td>
                 <td>{{ bet.profit }}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table> 
+    </div>
 </div>
 
-<div class='jumbotron mt-5'>
-    <h1 class="display-4">Ваши голоса</h1>
+<div class='container col-12 mt-5'>
+    <h1 class="h1">Ваши голоса</h1>
+    <div class='table-responsive'>
     <table class='table'>
         <thead>
             <tr>
-                <th scope='col'>Голосование</th>
+                <th scope='col'>url</th>
                 <th scope='col'>Фаворит</th>
             </tr>
         </thead>
         <tbody>
             {% for vote in votes %}
             <tr>
-                <td><a href='/contest/{{ vote.contest_id  }}'>Голосование {{ vote.contest_id }}</a></td>
+                <td><a href='/contest/{{ vote.contest_id  }}'>/contest/{{ vote.contest_id }}</a></td>
                 <td>{{ girls_dict[vote.chosen_id].name }}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table> 
+    </div>
 </div>
 {% endblock %}

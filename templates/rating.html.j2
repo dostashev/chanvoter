@@ -22,23 +22,27 @@
         <h1>Рейтинг</h1>
     </div>
 
-    <table class='table pb-5'>
-        <thead>
-            <th scope="col">#</th>
-            <th scope="col">Имя</th>
-            <th scope="col">Instagram</th>
-            <th scope="col">ELO</th>
-        </thead>
+    <div class='container col-12'>
+        <div class='table-responsive'>
+            <table class='table pb-5'>
+                <thead>
+                    <th scope="col">#</th>
+                    <th scope="col">Имя</th>
+                    <th scope="col">Instagram</th>
+                    <th scope="col">ELO</th>
+                </thead>
 
-        <tbody>
-            {% for girl in girls %}
-            <tr>
-            <th scope='row'>{{ girl.rating }}</th>
-            <td>{{ girl.name }}</td>
-            <td><a href='http://www.instagram.com/{{ girl.instagram }}'>{{ girl.instagram }}</a>
-            <td>{{ girl.ELO_rounded }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                <tbody>
+                    {% for girl in girls %}
+                    <tr>
+                    <th scope='row'>{{ girl.rating }}</th>
+                    <td>{{ girl.name }}</td>
+                    <td><a href='http://www.instagram.com/{{ girl.instagram }}'>{{ girl.instagram }}</a>
+                    <td>{{ girl.ELO_rounded }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}
