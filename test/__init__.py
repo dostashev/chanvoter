@@ -8,7 +8,7 @@ def fill_db(db_path):
 
     with make_session() as s:
         for g in girls:
-            cur_g = models.Girl(**g)
+            cur_g = models.Girl(**g,ELO=1500)
             s.add(cur_g)
         for c in contests:
             cur_c = models.Contest(**c)

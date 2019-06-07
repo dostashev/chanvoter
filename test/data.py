@@ -1,67 +1,79 @@
 import datetime
 
 girls = [{
-    'name': 'Julia Tarasenko',
-    'instagram': 'cloudlet_jt',
-    'ELO': 1500.9,
-    'photo': '/resources/girls/cloudlet_jt.png'
+    'name': 'Лиза Боярчук',
+    'instagram': 'prostokapec',
+    'photo': '/resources/girls/prostokapec.png'
 }, {
-    'name': 'Inna Glushenko',
-    'instagram': 'inna_gluschenko',
-    'ELO': 1500.0,
-    'photo': '/resources/girls/inna_glushchenko.png'
+    'name': 'Соня Краснокутская',
+    'instagram': 'kkrasnokutska',
+    'photo': '/resources/girls/kkrasnokutska.png'
 }, {
-    'name': 'Eve Stepanova',
-    'instagram': 'stapaschaa',
-    'ELO': 1499.9,
+    'name': 'Ева Степанова',
+    'instagram': 'stepaschaa',
     'photo': '/resources/girls/stepaschaa.png'
 }, {
-    'name': 'Neli Blinova',
+    'name': 'Неля Блинова',
     'instagram': '_neonelka_',
-    'ELO': 1500.0,
     'photo': '/resources/girls/_neonelka_.png'
+}, {
+    'name': 'Арина Кливак',
+    'instagram': 'klivaaak',
+    'photo': '/resources/girls/klivaaak.png'
+}, {
+    'name': 'Саша Саносян',
+    'instagram': 'alexandrasanosyan',
+    'photo': '/resources/girls/alexandrasanosyan.png'
+}, {
+    'name': 'Ева Лукашина',
+    'instagram': 'evalukashyna',
+    'photo': '/resources/girls/evalukashyna.png'
+}, {
+    'name': 'Инна Глущенко',
+    'instagram': 'inna_glushchenko',
+    'photo': '/resources/girls/inna_glushchenko.png'
+}, {
+    'name': 'Юля Тарасенко',
+    'instagram': 'cloudlet_jt',
+    'photo': '/resources/girls/cloudlet_jt.png'
+}, {
+    'name': 'Соня Ильина',
+    'instagram': 'sophie_ilina',
+    'photo': '/resources/girls/sophie_ilina.png'
+}, {
+    'name': 'Таня Супрун',
+    'instagram': 'spooky_pu',
+    'photo': '/resources/girls/spooky_pu.png'
+}, {
+    'name': 'Алина Гарбузова',
+    'instagram': 'ichbinolina',
+    'photo': '/resources/girls/ichbinolina.png'
 }]
 
 contests = [{
     'first_girl_id': 1,
     'second_girl_id': 2,
-    'begin': datetime.datetime(2019, 1, 1),
-    'end': datetime.datetime(2019, 12, 1),
-    'first_girl_win_chance': 0.4
+    'begin': datetime.datetime(2019, 6, 7),
+    'end': datetime.datetime(2019, 6, 10),
+    'first_girl_win_chance': 0.5
 }, {
     'first_girl_id': 3,
     'second_girl_id': 4,
-    'begin': datetime.datetime(2019, 1, 1),
-    'end': datetime.datetime(2019, 12, 1),
-    'first_girl_win_chance': 0.8
+    'begin': datetime.datetime(2019, 6, 7),
+    'end': datetime.datetime(2019, 6, 10),
+    'first_girl_win_chance': 0.5
 }, {
-    'first_girl_id': 2,
-    'second_girl_id': 4,
-    'begin': datetime.datetime(2019, 6, 15),
-    'end': datetime.datetime(2019, 6, 17),
-    'first_girl_win_chance': 0.99
+    'first_girl_id': 5,
+    'second_girl_id': 6,
+    'begin': datetime.datetime(2019, 6, 10),
+    'end': datetime.datetime(2019, 6, 13),
+    'first_girl_win_chance': 0.5
 }, {
-    'first_girl_id': 1,
-    'second_girl_id': 3,
-    'begin': datetime.datetime(2019, 6, 16),
-    'end': datetime.datetime(2019, 6, 18),
-    'first_girl_win_chance': 0.3
+    'first_girl_id': 7,
+    'second_girl_id': 8,
+    'begin': datetime.datetime(2019, 6, 10),
+    'end': datetime.datetime(2019, 6, 13),
+    'first_girl_win_chance': 0.5
 }]
 
-users = [{
-    'address': 'user_1',
-    'private_key': '1',
-    'coins': 1000000000
-}, {
-    'address': 'user_2',
-    'private_key': '2',
-    'coins': 1000000000
-}, {
-    'address': 'user_3',
-    'private_key': '3',
-    'coins': 1000000000
-}, {
-    'address': 'user_4',
-    'private_key': '4',
-    'coins': 1000000000
-}]
+users=[]
