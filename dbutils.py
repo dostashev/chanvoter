@@ -116,8 +116,8 @@ def get_bet_coeffs(dbsession, contest_id):
         second_girl_sum += bet.coins
 
     ss = first_girl_sum + second_girl_sum
-    k1 = 'Nan' if first_girl_sum == 0 else round(ss / first_girl_sum, 2)
-    k2 = 'Nan' if second_girl_sum == 0 else round(ss / second_girl_sum, 2)
+    k1 = '&infin;' if first_girl_sum == 0 else round(ss / first_girl_sum, 2)
+    k2 = '&infin;' if second_girl_sum == 0 else round(ss / second_girl_sum, 2)
 
     return k1, k2
 
@@ -133,7 +133,7 @@ def close_bets(dbsession, contest_id, winner_id):
     for bet in list(bets):
         user = dbsession.query(User).filter(User.address == bet.user_addr).first()
 
-        if k1 == 'Nan' or k2 == 'Nan' or winner_id == -1:
+        if k1 == '&infin;' or k2 == '&infin;' or winner_id == -1:
             user.coins += bet.coins 
             bet.profit = 0
             continue
