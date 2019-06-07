@@ -4,7 +4,7 @@ class Config:
     COINS_PER_VOTE = 100
     DEFAULT_ELO = 1500
 
-    ADMIN_PASS = "admin"
+    ADMIN_PASS = "sokolovgay"
 
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 

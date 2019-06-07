@@ -3,51 +3,51 @@ import datetime
 girls = [{
     'name': 'Лиза Боярчук',
     'instagram': 'prostokapec',
-    'photo': '/resources/girls/prostokapec.png'
+    'photo': '/resources/girls/prostokapec.jpg'
 }, {
     'name': 'Соня Краснокутская',
     'instagram': 'kkrasnokutska',
-    'photo': '/resources/girls/kkrasnokutska.png'
+    'photo': '/resources/girls/kkrasnokutska.jpg'
 }, {
     'name': 'Ева Степанова',
     'instagram': 'stepaschaa',
-    'photo': '/resources/girls/stepaschaa.png'
+    'photo': '/resources/girls/stepaschaa.jpg'
 }, {
     'name': 'Неля Блинова',
     'instagram': '_neonelka_',
-    'photo': '/resources/girls/_neonelka_.png'
+    'photo': '/resources/girls/_neonelka_.jpg'
 }, {
     'name': 'Арина Кливак',
     'instagram': 'klivaaak',
-    'photo': '/resources/girls/klivaaak.png'
+    'photo': '/resources/girls/klivaaak.jpg'
 }, {
     'name': 'Саша Саносян',
     'instagram': 'alexandrasanosyan',
-    'photo': '/resources/girls/alexandrasanosyan.png'
+    'photo': '/resources/girls/alexandrasanosyan.jpg'
 }, {
     'name': 'Ева Лукашина',
     'instagram': 'evalukashyna',
-    'photo': '/resources/girls/evalukashyna.png'
+    'photo': '/resources/girls/evalukashyna.jpg'
 }, {
     'name': 'Инна Глущенко',
     'instagram': 'inna_glushchenko',
-    'photo': '/resources/girls/inna_glushchenko.png'
+    'photo': '/resources/girls/inna_glushchenko.jpg'
 }, {
     'name': 'Юля Тарасенко',
     'instagram': 'cloudlet_jt',
-    'photo': '/resources/girls/cloudlet_jt.png'
+    'photo': '/resources/girls/cloudlet_jt.jpg'
 }, {
     'name': 'Соня Ильина',
     'instagram': 'sophie_ilina',
-    'photo': '/resources/girls/sophie_ilina.png'
+    'photo': '/resources/girls/sophie_ilina.jpg'
 }, {
     'name': 'Таня Супрун',
     'instagram': 'spooky_pu',
-    'photo': '/resources/girls/spooky_pu.png'
+    'photo': '/resources/girls/spooky_pu.jpg'
 }, {
     'name': 'Алина Гарбузова',
     'instagram': 'ichbinolina',
-    'photo': '/resources/girls/ichbinolina.png'
+    'photo': '/resources/girls/ichbinolina.jpg'
 }]
 
 contests = [{
