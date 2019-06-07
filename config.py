@@ -2,7 +2,8 @@ import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
-    COINS_PER_VOTE = 10_000
+    COINS_PER_VOTE = 100
+    DEFAULT_ELO = 1500
 
     ADMIN_PASS = "admin"
 
