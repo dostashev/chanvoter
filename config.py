@@ -5,7 +5,6 @@ class Config:
     DEFAULT_ELO = 1500
 
     ADMIN_PASS = "sokolovgay"
-
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
     FLASK_CONFIG = {

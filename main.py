@@ -54,7 +54,7 @@ def admin_auth():
 
     TODO: delete hardcode make config field where you can set admin secrets
     """
-    if request.args.get("key") == "admin":
+    if request.args.get("key") == Config.ADMIN_PASS: 
         session["admin"] = True
         return "success"
     return "denied"
