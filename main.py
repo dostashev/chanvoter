@@ -108,7 +108,7 @@ def get_rating():
                        key=lambda x: -x["ELO"])
         for i in range(len(girls)):
             girls[i]["rating"] = i + 1
-            girls[i]["ELO_rounded"] = round(girls[i]["ELO"])
+            girls[i]["ELO_rounded"] = round(girls[i]["ELO"],1)
         return render_template('rating.html.j2', girls=girls)
 
 
