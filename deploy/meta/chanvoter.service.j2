@@ -1,0 +1,19 @@
+[Unit]
+Description=Chanvoter uWSGI service
+After=syslog.target
+
+[Service]
+user={{ USER }}
+WorkingDirectory={{ BASE_DIR }}
+Environment="PATH={{ ENV }}"
+ExecStart=uwsgi --ini deploy/uwsgi.ini
+
+RuntimeDirectory=uwsgi
+Restart=always
+KillSignal=SIGQUIT
+Type=notify
+StandardError=syslog
+NotifyAccess=all
+
+[Install]
+WantedBy=multi-user.target

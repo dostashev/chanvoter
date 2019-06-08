@@ -1,0 +1,10 @@
+server {
+    listen 80;
+    listen [::]:80;
+    server_name chanvoter.{{ HOST }};
+
+    location / {
+       include uwsgi_params;
+       uwsgi_pass localhost:8001;
+    }
+}
