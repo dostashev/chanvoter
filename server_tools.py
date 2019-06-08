@@ -3,6 +3,7 @@ from database import open_db, models
 import random
 from string import ascii_letters
 from config import Config
+import datetime
 
 VAR_DIR = 'var'
 DB_FNAME = 'main.db'
@@ -31,4 +32,9 @@ def add_girl(name, instagram, photo):
     scope, _ = open_db(DB_FPATH)
     with scope() as s:
         s.add(models.Girl(name=name,instagram=instagram,ELO=Config.DEFAULT_ELO,photo=photo))
-    
+
+def add_contest(g1, g2, begin, end):
+    scope, _ = open_db(DB_FPATH)
+    with scope() as s:
+        s.add(models.Contest(first_girl_id=g1, second_girl_id=g2, begin=begin, end=end))
+
