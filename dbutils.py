@@ -154,5 +154,17 @@ def close_bets(dbsession, contest_id, winner_id):
 def get_user_votes(dbsession, user_addr):
     return dbsession.query(Vote).filter(Vote.user_addr == user_addr).all()
 
+
 def get_user_bets(dbsession, user_addr):
     return dbsession.query(Bet).filter(Bet.user_addr == user_addr).all()
+
+
+def get_voted_contests(dbsession, user_addr):
+    user_votes = dbsession.query(Vote).filter(Vote.user_addr == user_addr).all()
+    return list(map(lambda v : v.contest_id, user_votes))
+
+
+def get_opened_bets(dbsession, user_addr):
+    user_bets = dbsession.query(Bet).filter(Bet.user_addr == user_addr).all()
+    return list(map(lambda b : b.contest_id, user_bets))
+

@@ -49,11 +49,24 @@
                 </div>
 
                 <div class='card-body'>
-                    <a href='/contest/{{ contest.id }}' class='btn btn-lg btn-primary'>Голосовать!</a>
-                    
+                    <a href='/contest/{{ contest.id }}' class='btn btn-lg btn-primary'>Голосовать!</a> 
+                </div>
+
+                <div class='card-body'>
                     <div class='card-text mt-3'>
-                        <h4>До конца соревнования осталось <span class='countdown badge badge-primary' endtime='{{ contest.end.isoformat() }}'></span></h4>
+                        <h4>
+                            До конца соревнования осталось 
+                            <span class='countdown badge badge-primary' endtime='{{ contest.end.isoformat() }}'></span>
+                        </h4>
                     </div>
+                </div>
+
+                <div class='card-footer text-muted'>
+                    {% if contest.id in voted_contests %}
+                        Вы уже проголосовали
+                    {% else %}
+                        Вы еще не проголосовали
+                    {% endif %}
                 </div>
             </div>            
 
@@ -92,11 +105,24 @@
                 </div>
 
                 <div class='card-body'>
-                    <a href='/bet/{{ contest.id }}' class='btn btn-lg btn-primary'>Ставка!</a>
-                    
+                    <a href='/bet/{{ contest.id }}' class='btn btn-lg btn-primary'>Ставка!</a>   
+                </div>
+
+                <div class='card-body'>
                     <div class='card-text mt-3'>
-                        <h4>До начала соревнования осталось <span class='badge badge-primary waiting-countdown' begintime='{{ contest.begin.isoformat() }}'></span></h4>
+                        <h4>
+                            До начала соревнования осталось 
+                            <span class='badge badge-primary waiting-countdown' begintime='{{ contest.begin.isoformat() }}'></span>
+                        </h4>
                     </div>
+                </div>
+
+                <div class='card-footer text-muted'>
+                    {% if contest.id in opened_bets %}
+                    Вы уже сделали ставку
+                    {% else %}
+                    Вы еще не сделали ставку
+                    {% endif %}
                 </div>
             </div>            
 

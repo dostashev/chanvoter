@@ -93,7 +93,12 @@ def index():
     #отображает текущие, прошедшие и предстоящие матчи и всякую разную инфу
     scope, _ = database.open_db(db_path)
     with scope() as s:
+        user_addr = dbutils.get_address(s, session['private_key'])
+        voted_contests = dbutils.get_voted_contests(s, user_addr)
+        opened_bets = dbutils.get_opened_bets(s, user_addr)
         return render_template('index.html.j2',
+                               opened_bets = opened_bets,
+                               voted_contests = voted_contests,
                                active_contests=dbutils.get_active_contests(s),
                                bet_contests=dbutils.get_bet_contests(s))
 

@@ -9,7 +9,12 @@ var date_diff_to_str = () => {
     var ss = Math.floor(msec / 1000);
     msec -= ss * 1000;
 
-    return `${dd} д, ${hh} ч, ${mm} м`;
+    if(dd == 0) {
+        return `${hh} ч, ${mm} м`;
+    }
+    else {
+        return `${dd} д, ${hh} ч, ${mm} м`;
+    }
 }
 
 var updateCountdown = (countdown) => {
@@ -31,10 +36,12 @@ window.addEventListener("load", () => {
 
     countdowns.forEach( (cd) => {
         setInterval(() => updateCountdown(cd), 1000);
+        updateCountdown(cd);
     });
 
     waiting_countdowns.forEach( (cd) => {
         setInterval(() => updateWaitingCountdown(cd), 1000);
+        updateWaitingCountdown(cd);
     });
 })
 
