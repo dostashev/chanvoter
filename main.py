@@ -213,6 +213,12 @@ def new_bet():
     except ValueError:
         return "error: invalid amount of coins"
 
+    if coins == 0:
+        return "error: genius!"
+
+    if coins < 0:
+        return "error: nice try!"
+
     with scope() as s:
         user = dbutils.get_address(s, request.args.get("private_key"))
 
@@ -256,7 +262,7 @@ def send_admin_html():
     scope, _ = database.open_db(db_path)
     with scope() as s:
         return render_template('admin.html.j2',
-                               active_contests=dbutils.get_active_contests(s),
+                               active_contests=dbutils.get_finalizable_contests(s),
                                bet_contests=dbutils.get_bet_contests(s),
                                girls=dbutils.get_all_girls(s),
                                users=dbutils.get_all_users(s))
