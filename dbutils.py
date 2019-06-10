@@ -137,9 +137,7 @@ def close_bets(dbsession, contest_id, winner_id):
         if k1 == '&infin;' or k2 == '&infin;' or winner_id == -1:
             user.coins += bet.coins 
             bet.profit = 0
-            continue
-
-        if winner_id == bet.chosen_id:
+        elif winner_id == bet.chosen_id:
             if winner_id == bet.contest.first_girl_id:
                 user.coins += round(k1  * bet.coins)
                 bet.profit = round((k1 - 1) * bet.coins)
