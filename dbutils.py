@@ -57,8 +57,9 @@ def get_active_contests(dbsession):
 
 
 def get_finalizable_contests(dbsession):
+    cur_time = datetime.datetime.today()
     return list(
-        dbsession.query(Contest).filter(Contest.finalized == False).all())
+        dbsession.query(Contest).filter(Contest.finalized == False).filter(cur_time >= Contest.begin).all())
 
 
 def get_bet_contests(dbsession):
@@ -136,9 +137,7 @@ def close_bets(dbsession, contest_id, winner_id):
         if k1 == '&infin;' or k2 == '&infin;' or winner_id == -1:
             user.coins += bet.coins 
             bet.profit = 0
-            continue
-
-        if winner_id == bet.chosen_id:
+        elif winner_id == bet.chosen_id:
             if winner_id == bet.contest.first_girl_id:
                 user.coins += round(k1  * bet.coins)
                 bet.profit = round((k1 - 1) * bet.coins)
