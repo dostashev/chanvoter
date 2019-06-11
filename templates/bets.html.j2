@@ -27,8 +27,8 @@
                             /bet/{{ bet.id }}
                         </a>
                     </td>
-                    <td>{{ girls[bet.first_girl_id].name }}</td>
-                    <td>{{ girls[bet.second_girl_id].name }}</td>
+                    <td>{{ girls[bet.first_girl_id - 1].name }}</td>
+                    <td>{{ girls[bet.second_girl_id - 1].name }}</td>
                     <td> x{{ koeffs[bet.id][0] }} : x{{ koeffs[bet.id][1] }} </td>
                     <td>
                         {% if bet.id in opened_bets  %}
