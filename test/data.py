@@ -50,29 +50,55 @@ girls = [{
     'photo': '/resources/girls/ichbinolina.jpg'
 }]
 
-contests = [{
-    'first_girl_id': 1,
-    'second_girl_id': 2,
-    'begin': datetime.datetime(2019, 6, 7),
-    'end': datetime.datetime(2019, 6, 10),
-    'first_girl_win_chance': 0.5
-}, {
-    'first_girl_id': 3,
-    'second_girl_id': 4,
-    'begin': datetime.datetime(2019, 6, 7),
-    'end': datetime.datetime(2019, 6, 10),
-    'first_girl_win_chance': 0.5
-}, {
+contests = [
+{
     'first_girl_id': 5,
     'second_girl_id': 6,
     'begin': datetime.datetime(2019, 6, 10),
-    'end': datetime.datetime(2019, 6, 13),
+    'end': datetime.datetime(2019, 6, 14),
+    'first_girl_win_chance': 0.5
+},{
+    'first_girl_id': 5,
+    'second_girl_id': 6,
+    'begin': datetime.datetime(2019, 6, 10),
+    'end': datetime.datetime(2019, 6, 14),
+    'first_girl_win_chance': 0.5
+},{
+    'first_girl_id': 5,
+    'second_girl_id': 6,
+    'begin': datetime.datetime(2019, 6, 10),
+    'end': datetime.datetime(2019, 6, 14),
+    'first_girl_win_chance': 0.5
+},{
+    'first_girl_id': 5,
+    'second_girl_id': 6,
+    'begin': datetime.datetime(2019, 6, 10),
+    'end': datetime.datetime(2019, 6, 14),
     'first_girl_win_chance': 0.5
 }, {
     'first_girl_id': 7,
     'second_girl_id': 8,
-    'begin': datetime.datetime(2019, 6, 10),
-    'end': datetime.datetime(2019, 6, 13),
+    'begin': datetime.datetime(2019, 6, 13),
+    'end': datetime.datetime(2019, 6, 14),
+    'first_girl_win_chance': 0.5
+}, 
+{
+    'first_girl_id': 5,
+    'second_girl_id': 6,
+    'begin': datetime.datetime(2019, 6, 13),
+    'end': datetime.datetime(2019, 6, 14),
+    'first_girl_win_chance': 0.5
+}, {
+    'first_girl_id': 7,
+    'second_girl_id': 8,
+    'begin': datetime.datetime(2019, 6, 13),
+    'end': datetime.datetime(2019, 6, 14),
+    'first_girl_win_chance': 0.5
+}, {
+    'first_girl_id': 5,
+    'second_girl_id': 6,
+    'begin': datetime.datetime(2019, 6, 13),
+    'end': datetime.datetime(2019, 6, 14),
     'first_girl_win_chance': 0.5
 }]
 

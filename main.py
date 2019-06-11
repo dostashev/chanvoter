@@ -103,6 +103,37 @@ def index():
                                bet_contests=dbutils.get_bet_contests(s))
 
 
+@app.route("/contests")
+@login_required
+def contests():
+    scope, _ = database.open_db(db_path)
+    with scope() as s:
+        user_addr = dbutils.get_address(s, session['private_key'])
+        voted_contests = dbutils.get_voted_contests(s, user_addr)
+        return render_template('contests.html.j2',
+                               voted_contests = voted_contests,
+                               active_contests=dbutils.get_active_contests(s))
+
+
+@app.route("/bets")
+@login_required
+def bets():
+    scope, _ = database.open_db(db_path)
+    with scope() as s:
+        user_addr = dbutils.get_address(s, session['private_key'])
+        opened_bets = dbutils.get_opened_bets(s, user_addr)
+
+        koeffs = {}
+        for bet in dbutils.get_bet_contests(s):
+            koeffs[bet.id] = dbutils.get_bet_coeffs(s, bet.id)
+
+        return render_template('bets.html.j2',
+                               opened_bets = opened_bets,
+                               bet_contests=dbutils.get_bet_contests(s),
+                               koeffs = koeffs,
+                               girls=dbutils.get_all_girls(s))
+
+
 @app.route("/rating", methods=["GET", "POST"])
 @login_required
 def get_rating():

@@ -42,6 +42,17 @@
         <a class="nav-link" href="/profile">Профиль<span class="sr-only">(current)</span></a>
       </li>
 
+      <li class="nav-item active">
+        <a class="nav-link" href="/contests">Соревнования<span class="sr-only">(current)</span></a>
+      </li>
+
+      <li class="nav-item active">
+        <a class="nav-link" href="/bets">Ставки<span class="sr-only">(current)</span></a>
+      </li>
+
+      <li class="nav-item active">
+        <a class="nav-link" href="/admin">Панель Админа<span class="sr-only">(current)</span></a>
+      </li>
     </ul>
 
     <div class="form-inline my-2 my-lg-0">
@@ -50,10 +61,28 @@
     </div>
   </div>
 </nav>
+
 {% endblock %}
 
-    {% block body %}
-    {% endblock %}
+{% block body %}
+{% endblock %}
+
+{% block footer %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light mt-5">
+    <div class='navbar-brand'>
+        <img class='d-inline-block align-top' src='https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fworkingcopyapp.com%2Fimg%2Foctocat.png&f=1' width=30 height=30>
+        <a href='http://github.com/omn1/chanvoter'>Our github</a>
+    </div>
+
+    
+    <div class='form-inline my-2 my-lg-0'>
+    <small class='form-inline text-muted'>
+        Chanvoter since 2019. No rights reserved.
+    </small>
+    </div>
+</nav>
+{% endblock %}
+
 </body>
 
 </html>

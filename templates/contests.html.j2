@@ -1,0 +1,44 @@
+{% extends "base.html.j2" %}
+
+{% block body %}
+<div class="container mt-3">
+    <div class="h2 text-center">
+        Актуальные соревнования:
+    </div>
+
+    <div class='table-responsive'>
+        <table class='table'>
+            <tr>
+                <th scope="col">Соревнование</th>
+                <th scope="col">Девушка 1</th>
+                <th scope="col">Девушка 2</th>
+                <th scope="col">Статус</th>
+            </tr>
+            <tbody>
+                {% for contest in active_contests %}
+                {% if contest.id in voted_contests %}
+                <tr class='table-success'>
+                {% else %}
+                <tr class='table-warning'>
+                {% endif %}
+                    <td>
+                        <a href='/contest/{{ contest.id }}'>
+                            /contest/{{ contest.id }}
+                        </a>
+                    </td>
+                    <td>{{ contest.first_girl.name }}</td>
+                    <td>{{ contest.second_girl.name }}</td>
+                    <td>
+                        {% if contest.id in voted_contests %}
+                        Проголосовали
+                        {% else %}
+                        Не проголосовали
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

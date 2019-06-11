@@ -27,16 +27,10 @@
         <h1 class='mt-5'>Актуальные соревнования:</h1>
     </div>
 
-    {% if not active_contests %}
-        <div class='col-12 container text-center'>
-            <p class='text-muted'>Пока-что тут ничего нет, но скоро оно обязательно появится...</p>
-        </div>
-    {% endif %}
-
-    {% for contest in active_contests %}
+    {% for contest in active_contests[:2] %}
 
     <div class='row col-12 mt-4'>  
-        <div class='card-deck col-lg-8 mx-auto pb-4 pt-4 bg-light'>
+        <div class='card-deck col-lg-8 col-md-10 mx-auto pb-4 pt-4 bg-light'>
 
             <div class='card border-dark ml-4'>
                 <img src="{{ contest.first_girl.photo }}" class="card-img-top">
@@ -76,20 +70,29 @@
             </div>
         </div>
     </div>
-    
+
     {% endfor %}
+ 
+    {% if active_contests | length > 2 %}
+    <div class='row col-12'>
+        <a class='btn btn-lg btn-secondary text-white mt-4 d-block mx-auto' href='/contests'>
+            Другие соревнования...
+        </a>
+    </div>
+    {% endif %}
+
+    {% if not active_contests %}
+    <div class='col-12 container text-center'>
+        <p class='text-muted'>Пока-что тут ничего нет, но скоро оно обязательно появится...</p>
+    </div>
+    {% endif %}
 
     <div class='row col-6 mx-auto justify-content-center'>
         <h1 class='mt-5'>Принимаются ставки:</h1>
     </div>
 
-    {% if not bet_contests %}
-        <div class='col-12 container text-center'>
-            <p class='text-muted'>Пока-что тут ничего нет, но скоро оно обязательно появится...</p>
-        </div>
-    {% endif %}
 
-    {% for contest in bet_contests %}
+    {% for contest in bet_contests[:2] %}
 
     <div class='row col-12 mt-4'>  
         <div class='card-deck col-lg-8 col-sm-12 mx-auto pb-4 pt-4 bg-light'>
@@ -133,4 +136,19 @@
         </div>
     </div>    
     {% endfor %}
+
+    {% if bet_contests|length > 2 %}
+    <div class='row col-12'>
+        <a class='btn btn-lg btn-secondary text-white mt-4 d-block mx-auto' href='/bets'>
+            Другие ставки...
+        </a>
+    </div>
+    {% endif %}
+
+    {% if not bet_contests %}
+    <div class='col-12 container text-center'>
+        <p class='text-muted'>Пока-что тут ничего нет, но скоро оно обязательно появится...</p>
+    </div>
+    {% endif %}
+
 {% endblock %}

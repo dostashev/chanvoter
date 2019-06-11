@@ -1,0 +1,46 @@
+{% extends "base.html.j2" %}
+
+{% block body %}
+<div class="container mt-3">
+    <div class="h2 text-center">
+        Актуальные ставки:
+    </div>
+
+    <div class='table-responsive'>
+        <table class='table'>
+            <tr>
+                <th scope="col">Ставка</th>
+                <th scope="col">Девушка 1</th>
+                <th scope="col">Девушка 2</th>
+                <th scope="col">Коэффиценты</th>
+                <th scope="col">Статус</th>
+            </tr>
+            <tbody>
+                {% for bet in bet_contests %}
+                {% if bet.id in opened_bets %}
+                <tr class='table-success'>
+                {% else %}
+                <tr class='table-warning'>
+                {% endif %}
+                    <td>
+                        <a href='/bet/{{ bet.id }}'>
+                            /bet/{{ bet.id }}
+                        </a>
+                    </td>
+                    <td>{{ girls[bet.first_girl_id].name }}</td>
+                    <td>{{ girls[bet.second_girl_id].name }}</td>
+                    <td> x{{ koeffs[bet.id][0] }} : x{{ koeffs[bet.id][1] }} </td>
+                    <td>
+                        {% if bet.id in opened_bets  %}
+                        Сделали ставку
+                        {% else %}
+                        Не сделали ставку
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
