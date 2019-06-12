@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, make_response, session, send_from_directory, g
+from flask import Flask, render_template, request, redirect, url_for, make_response, session, send_from_directory, Blueprint
 
 import database
 from database import models
@@ -7,10 +7,8 @@ import rating
 from functools import wraps
 from config import Config
 
-app = Flask(__name__, static_url_path='')
-app.config.update(Config.FLASK_CONFIG)
-db_path = Config.FLASK_CONFIG["SQLALCHEMY_DATABASE_URI"]
-
+app = Blueprint("app", __name__)
+db_path = "var/main.db"
 
 def admin_login_required(f):
     @wraps(f)
@@ -51,7 +49,6 @@ def login():
 def admin_auth():
     """
     check if admin key is correct
-
     TODO: delete hardcode make config field where you can set admin secrets
     """
     if request.args.get("key") == Config.ADMIN_PASS: 
@@ -358,11 +355,6 @@ def finish_contest(contest_id):
     
     return redirect('/admin')
 
-
 @app.route("/resources/<path:path>")
 def send_resource(path):
-    return send_from_directory("resources", path)
-
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=80)
+    return send_from_directory("/home/deadstone/Projects/chanvoter/chanvoter/resources", path)

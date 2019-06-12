@@ -14,8 +14,7 @@ if __name__ == "__main__":
     
     with open(path.join(deploy_dir, "chanvoter.conf"), "w") as of:
         of.write(nginxt.render(
-            HOST=Config.HOST,
-            RESOURCES_DIR=Config.RESOURCES_DIR))
+            STATIC_DIR=Config.STATIC_DIR))
 
     with open(path.join(deploy_dir, "uwsgi.ini"), "w") as of:
         of.write(uwsgit.render(

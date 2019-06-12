@@ -1,4 +1,4 @@
-from main import app as application
+from app import make_app
+from config import Config
 
-if __name__ == "__main__":
-    application.run()
+application = make_app(Config)

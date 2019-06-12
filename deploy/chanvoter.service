@@ -4,8 +4,8 @@ After=syslog.target
 
 [Service]
 user=deadstone
-WorkingDirectory=/home/deadstone/Code/chanvoter/chanvoter
-Environment="PATH=/home/deadstone/Code/chanvoter/bin"
+WorkingDirectory=/home/deadstone/Projects/chanvoter/chanvoter
+Environment="PATH=/home/deadstone/Projects/chanvoter/bin"
 ExecStart=uwsgi --ini deploy/uwsgi.ini
 
 RuntimeDirectory=uwsgi

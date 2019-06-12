@@ -1,3 +1,9 @@
-var
+# Temporary files
+var/*
 __pycache__
 nohup.out
+
+# Configuration files
+deploy/chanvoter.conf
+deploy/chanvoter.service
+deploy/uwsgi.ini
