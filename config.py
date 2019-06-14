@@ -16,4 +16,7 @@ class Config:
     DB_PATH       = os.path.join(BASE_DIR, "var", "main.db")
     ENV           = os.path.join(os.path.dirname(BASE_DIR), "bin")
 
+    SQLALCHEMY_TRACK_MODIFICATIONS = True 
+    SQLALCHEMY_DATABASE_URI        = f"sqlite:///{DB_PATH}"
+    
     DEBUG = True

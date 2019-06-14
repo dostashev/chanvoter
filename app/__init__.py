@@ -1,6 +1,7 @@
 import flask
 import jinja2
 import importlib
+from .database import db
 from .routes import app as app_blueprint
 
 def make_app(config, **argv):
@@ -8,6 +9,9 @@ def make_app(config, **argv):
     app.config.from_object(config)
     app.register_blueprint(app_blueprint)
 
+    db.init_app(app)    
+
+    # Make cutson jinja2 search parameters
     templates_loader = jinja2.ChoiceLoader([
         app.jinja_loader, 
         jinja2.FileSystemLoader(config.TEMPLATE_DIR)])
