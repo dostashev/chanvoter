@@ -2,10 +2,6 @@ import os
 import getpass
 
 class Config:
-    COINS_PER_VOTE = 100
-    DEFAULT_ELO = 1500
-
-    ADMIN_PASS = "sokolovgay"
     SECRET_KEY = "This realy need to be changed"
     
     USER          = getpass.getuser()

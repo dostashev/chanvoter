@@ -1,11 +1,12 @@
 var handle_vote_response = (text) => {
-    if(text == "error: already voted in this contest")
-    {
+    if(text == "error: already voted in this contest") {
         $("#extra-vote-alert").modal();
     }
-    if(text == "error: invalid private key")
-    {
+    if(text == "error: invalid private key") {
         $("#wrong-key-alert").modal();
+    }
+    if(text == "error: not enough money") {
+        $("#less-money-alert").modal();
     }
     if(text == "success") {
         $("#success-alert").modal();

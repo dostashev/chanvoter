@@ -72,26 +72,31 @@ def contests():
 def bets():
     cvapi = ChanVoterApi(db.session)
     user = cvapi.get_user_by_private_key(session['private_key'])
-    print(cvapi.get_bet_contests(include_coeffs=True))
+    bet_contests = cvapi.get_bet_contests(include_coeffs=True)
     return render_template('bets.html.j2',
         bet_contests=cvapi.get_bet_contests(include_coeffs=True),
         rated_contests=cvapi.get_rated_contest_ids(user["address"]))
 
 
+@app.route('/contest/<int:id>', methods=["GET"])
+@login_required
+def contest(id):
+   cvapi = ChanVoterApi(db.session)
+   contest = cvapi.get_contest(id)
+   user = cvapi.get_user_by_private_key(session["private_key"])
+   return render_template('contest.html.j2', contest=contest, user=user)
+
+
+@app.route("/vote", methods=["POST"])
+@login_required
+def vote():
+    args = request.args
+    cvapi = ChanVoterApi(db.session)
+    return cvapi.vote(args["private_key"],
+        args["contest_id"],
+        args["chosen_id"])
+
+
 @app.route("/resources/<path:path>")
 def send_resource(path):
    return send_from_directory("/home/deadstone/Projects/chanvoter/chanvoter/resources", path)
-
-
-from app.database.schemas import * 
-
-@app.route("/test")
-def test():
-    """
-    julia = Girl(name="Iulia")
-    inna  = Girl(name="Inna")
-    contest = Contest(first_girl=julia, second_girld=inna)
-    cs = ContestSchema()
-    print(cs.dump(contest).data)
-    """
-    return "It is OK"

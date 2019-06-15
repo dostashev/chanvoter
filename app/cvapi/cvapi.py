@@ -1,8 +1,8 @@
 from datetime import datetime
 
-from .database.models import *
-from .database.schemas import *
-
+from app.database.models import *
+from app.database.schemas import *
+from .cvconfig import ChanVoterConfig
 
 class ChanVoterApi(object):
 
@@ -69,11 +69,11 @@ class ChanVoterApi(object):
         user = self.get_user(addr)
         return user["coins"]
 
-    '''
-    def check_already_voted(self, addr, contest_id):
-        bets = self.get_bets(user_addr=user_addr, contest_id=contest_id)
-        return bet
-    '''
+    
+    def check_already_voted(self, user_addr, contest_id):
+        bets = self.get_votes(user_addr=user_addr, contest_id=contest_id)
+        return len(bets) != 0 
+
 
     def check_contest_active(self, id):
         contest = self.get_contest(id)
@@ -129,17 +129,17 @@ class ChanVoterApi(object):
         contest object
         """
         contests = self.get_contests()
-        contests = filter(lambda c :
+        contests = list(filter(lambda c :
             self.check_contest_is_bet(c["id"]),
-            contests)
+            contests))
 
         if include_coeffs:
             for c in contests: 
                 k1, k2 = self.get_bet_coeffs(c["id"])
-                #c.k1 = k1
-                #c.k2 = k2
+                c["coeff1"] = k1
+                c["coeff2"] = k2
 
-        return list(contests)
+        return contests
 
 
     def get_finalizable_contests(self):
@@ -200,6 +200,43 @@ class ChanVoterApi(object):
         bets = self.get_bets(user_addr=user_addr)
         return list(map(lambda b : b["contest_id"], bets))
 
+    
+    def update_balance(self, user_addr, delta):
+        """ Add `delta` to users balance.
+        If so balance become negative throw `ValueError`
+        """
+        user = self.dbsession.query(User).filter(
+            User.address == user_addr).first()
+        if user.coins + delta <= 0:
+            raise ValueError("User balance can't be a negative")
+
+        user.coins += delta
 
 
+    def vote(self, private_key, contest_id, chosen_id):
+        """ Make a bet and returs `success` or return and error.
+        Errors:
+        "error: inactive contest",
+        "error: invalid private key",
+        "error: already voted in this contest",
+        "error: not enough of money"
+        """
+        if not self.check_contest_active(contest_id):
+            return "error: inactive contest"
 
+        user = self.get_user_by_private_key(private_key)
+        if not user:
+            return "error: invalid private key"
+        
+        if self.check_already_voted(user["address"], contest_id):
+            return "error: already voted in this contest"
+
+        if user["coins"] < ChanVoterConfig.COINS_PER_VOTE:
+            return "error: not enough money"
+
+        self.update_balance(user["address"], -ChanVoterConfig.COINS_PER_VOTE)
+        vote = Vote(user_addr=user["address"], chosen_id=chosen_id, contest_id=contest_id)
+        self.dbsession.add(vote)
+        self.dbsession.commit()
+
+        return "success"
