@@ -72,7 +72,6 @@ def contests():
 def bets():
     cvapi = ChanVoterApi(db.session)
     user = cvapi.get_user_by_private_key(session['private_key'])
-    bet_contests = cvapi.get_bet_contests(include_coeffs=True)
     return render_template('bets.html.j2',
         bet_contests=cvapi.get_bet_contests(include_coeffs=True),
         rated_contests=cvapi.get_rated_contest_ids(user["address"]))
@@ -95,6 +94,26 @@ def vote():
     return cvapi.vote(args["private_key"],
         args["contest_id"],
         args["chosen_id"])
+
+
+@app.route("/bet/<int:id>", methods=["GET"])
+@login_required
+def bet(id):
+   cvapi = ChanVoterApi(db.session)
+   contest = cvapi.get_bet_contest(id)
+   user = cvapi.get_user_by_private_key(session["private_key"])
+   return render_template('bet.html.j2', contest=contest, user=user)
+
+
+@app.route("/bet", methods=["POST"])
+@login_required
+def rate():
+    args = request.args
+    cvapi = ChanVoterApi(db.session)
+    return cvapi.bet(args["private_key"],
+        args["contest_id"],
+        args["chosen_id"],
+        args["coins"])
 
 
 @app.route("/resources/<path:path>")

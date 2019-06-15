@@ -27,9 +27,23 @@
                             /bet/{{ contest.id }}
                         </a>
                     </td>
+
                     <td>{{ contest.first_girl.name }}</td>
                     <td>{{ contest.second_girl.name }}</td>
-                    <td> x{{ contest.coeff1|round(2) }} : x{{ contest.coeff2|round(2) }} </td>
+ 
+                    <td>
+                        x{% if contest.coeff1|float() %}
+                            {{ contest.coeff1|round(2) }}
+                        {% else %}
+                            {{ contest.coeff1 }}
+                        {% endif %}  
+                        : x{% if contest.coeff2|float() %}
+                            {{ contest.coeff2|round(2) }} 
+                        {% else %}
+                            {{ contest.coeff2 }}
+                        {% endif %}
+                    </td>
+
                     <td>
                         {% if contest.id in rated_contests  %}
                         Сделали ставку

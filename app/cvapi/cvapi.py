@@ -71,7 +71,16 @@ class ChanVoterApi(object):
 
     
     def check_already_voted(self, user_addr, contest_id):
-        bets = self.get_votes(user_addr=user_addr, contest_id=contest_id)
+        """ Check if user already voted 
+        """
+        votes = self.get_votes(user_addr=user_addr, contest_id=contest_id)
+        return len(votes) != 0 
+
+
+    def check_already_rated(self, user_addr, contest_id):
+        """ Check if user already made a bet
+        """
+        bets = self.get_bets(user_addr=user_addr, contest_id=contest_id)
         return len(bets) != 0 
 
 
@@ -140,6 +149,20 @@ class ChanVoterApi(object):
                 c["coeff2"] = k2
 
         return contests
+
+
+    def get_bet_contest(self, id):
+        """ Return contest with its bet-coeffs. 
+        If contest isn't a bet then raise a `ValueError`
+        """
+        if not self.check_contest_is_bet(id):
+            raise ValueError("Given contest have to be a bet")
+
+        contest = self.get_contest(id)
+        k1, k2 = self.get_bet_coeffs(id)
+        contest["coeff1"] = k1
+        contest["coeff2"] = k2
+        return contest
 
 
     def get_finalizable_contests(self):
@@ -237,6 +260,43 @@ class ChanVoterApi(object):
         self.update_balance(user["address"], -ChanVoterConfig.COINS_PER_VOTE)
         vote = Vote(user_addr=user["address"], chosen_id=chosen_id, contest_id=contest_id)
         self.dbsession.add(vote)
+        self.dbsession.commit()
+
+        return "success"
+
+
+    def bet(self, private_key, contest_id, chosen_id, coins):
+        """ Make a bet and returs `success` or return and error.
+        Errors:
+        "error: contest isn't a bet"
+        "error: invalid private key",
+        "error: already rated this contest",
+        "error: not enough of money",
+        "error: invalid amount of coins"
+        """
+        try:
+            coins = float(coins)
+        except ValueError:
+            return "error: invalid amount of coins"
+        if coins <= 0:
+            return "error: invalid amount of coins"
+
+        if not self.check_contest_is_bet(contest_id):
+            return "error: contest isn't a bet"
+
+        user = self.get_user_by_private_key(private_key)
+        if not user:
+            return "error: invalid private key"
+        
+        if self.check_already_rated(user["address"], contest_id):
+            return "error: already rated this contest"
+
+        if coins < coins:
+            return "error: not enough of money"
+
+        self.update_balance(user["address"], -coins)
+        bet = Bet(user_addr=user["address"], chosen_id=chosen_id, contest_id=contest_id, coins=coins)
+        self.dbsession.add(bet)
         self.dbsession.commit()
 
         return "success"

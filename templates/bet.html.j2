@@ -6,10 +6,10 @@
     {{ super() }}
     
     <script type='text/javascript'>
-        FIRST_GIRL_ID = {{ first_girl.id }};
-        SECOND_GIRL_ID = {{ second_girl.id }};
+        FIRST_GIRL_ID = {{ contest.first_girl_id }};
+        SECOND_GIRL_ID = {{ contest.second_girl_id }};
         CONTEST_ID = {{ contest.id }};
-        PRIVATE_KEY = "{{ private_key }}";
+        PRIVATE_KEY = "{{ user.private_key }}";
     </script>
     
     <script type='text/javascript' src='/resources/scripts/bet.js'></script>
@@ -43,23 +43,36 @@
         <div class='card-deck text-center mt-3 col-8 mx-auto'>
             <div class='card' id='first-girl-card'>
                 <div class='op-container'>
-                    <img src="{{ first_girl.photo }}" class="card-img-top op-image" alt="...">
+                    <img src="{{ contest.first_girl.photo }}" class="card-img-top op-image" alt="...">
                     <div class='op-middle bg-secondary text-white pl-1 pr-1'><h2>Нажмите чтобы сделать ставку</h2></div>
                 </div>
-
                 <div class='card-footer'>
-                    {{ first_girl.name }} (x {{ k1 }})
+                    {{ contest.first_girl.name }} 
+                    (
+                    x{% if contest.coeff1|float() %}
+                        {{ contest.coeff1|round(2) }}
+                    {% else %}
+                        {{ contest.coeff1 }}
+                    {% endif %}  
+                    )
                 </div>
             </div>
 
             <div class='card' id='second-girl-card'>
                 <div class='op-container'>
-                    <img src="{{ second_girl.photo }}" class="card-img-top op-image" alt="...">
+                    <img src="{{ contest.second_girl.photo }}" class="card-img-top op-image" alt="...">
                     <div class='op-middle bg-secondary text-white pl-1 pr-1'><h2>Нажмите чтобы сделать ставку</h2></div>
                 </div>
 
                 <div class='card-footer'>
-                    {{ second_girl.name }} (x {{ k2 }})
+                    {{ contest.second_girl.name }} 
+                    (
+                    x{% if contest.coeff2|float() %}
+                        {{ contest.coeff2|round(2) }} 
+                    {% else %}
+                        {{ contest.coeff2 }}
+                    {% endif %}
+                    )
                 </div>
             </div>
         </div>
@@ -67,18 +80,18 @@
 
     <div class="row mt-2 col-12">
         <div class="progress col-8 mx-auto">
-        {% if k1 == '&infin;' and k2 == '&infin;' %} 
+        {% if contest.coeff1 == '&infin;' and contest.coeff2 == '&infin;' %} 
             <div class="progress-bar" role="progressbar" saria-valuenow="100"  aria-valuemin="0" aria-valuemax="100" style="width: 50%"></div>
             <div class="progress-bar bg-success" role="progressbar" saria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 50%"></div>
-        {% elif k1 == '&infin;' %}
+        {% elif contest.coeff1 == '&infin;' %}
             <div class="progress-bar" role="progressbar" saria-valuenow="100"  aria-valuemin="0" aria-valuemax="100" style="width: 1%"></div>
             <div class="progress-bar bg-success" role="progressbar" saria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 99%"></div>
-        {% elif k2 == '&infin;' %} 
+        {% elif contest.coeff2 == '&infin;' %} 
             <div class="progress-bar" role="progressbar" saria-valuenow="100"  aria-valuemin="0" aria-valuemax="100" style="width: 99%"></div>
             <div class="progress-bar bg-success" role="progressbar" saria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 1%"></div>
-        {% elif True  %}
-            <div class="progress-bar" role="progressbar" saria-valuenow="100"  aria-valuemin="0" aria-valuemax="100" style="width: {{ 100 * k2 / (k1 + k2) }}%"></div>
-            <div class="progress-bar bg-success" role="progressbar" saria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: {{ 100 * k1 / (k1 + k2) }}%"></div>
+        {% else  %}
+            <div class="progress-bar" role="progressbar" saria-valuenow="100"  aria-valuemin="0" aria-valuemax="100" style="width: {{ 100 * contest.coeff2 / (contest.coeff1 + contest.coeff2) }}%"></div>
+            <div class="progress-bar bg-success" role="progressbar" saria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: {{ 100 * contest.coeff1 / (contest.coeff1 + contest.coeff2) }}%"></div>
         {% endif %}
         </div>
     </div>
@@ -103,7 +116,7 @@
 
     <!-- Alerts form r there -->
 
-    <div class="modal" tabindex="-1" role="dialog" id='success-alert'>
+    <div class="modal fade" tabindex="-1" role="dialog" id='success-alert'>
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -116,13 +129,14 @@
           </div>
           <div class="modal-footer">
             <a class='btn btn-primary' class='btn btn-primary' href='/'>На главную</a>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+            <a class='btn btn-primary' class='btn btn-primary' href='/bets'>Все ставки</a>
+            <a type="button" class="btn btn-secondary" href='/bet/{{ contest.id }}'>Закрыть</a>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="modal" tabindex="-1" role="dialog" id='wrong-key-alert'>
+    <div class="modal fade" tabindex="-1" role="dialog" id='wrong-key-alert'>
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -136,13 +150,14 @@
           </div>
           <div class="modal-footer">
             <a class='btn btn-primary' class='btn btn-primary' href='/'>На главную</a>
+            <a class='btn btn-primary' class='btn btn-primary' href='/bets'>Все ставки</a>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="modal" tabindex="-1" role="dialog" id='extra-vote-alert'>
+    <div class="modal fade" tabindex="-1" role="dialog" id='extra-vote-alert'>
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -156,13 +171,14 @@
           </div>
           <div class="modal-footer">
             <a class='btn btn-primary' class='btn btn-primary' href='/'>На главную</a>
+            <a class='btn btn-primary' class='btn btn-primary' href='/bets'>Все ставки</a>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="modal" tabindex="-1" role="dialog" id='less-money-alert'>
+    <div class="modal fade" tabindex="-1" role="dialog" id='less-money-alert'>
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -176,13 +192,14 @@
           </div>
           <div class="modal-footer">
             <a class='btn btn-primary' class='btn btn-primary' href='/'>На главную</a>
+            <a class='btn btn-primary' class='btn btn-primary' href='/bets'>Все ставки</a>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="modal" tabindex="-1" role="dialog" id='wrong-coins-alert'>
+    <div class="modal fade" tabindex="-1" role="dialog" id='wrong-coins-alert'>
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -196,6 +213,7 @@
           </div>
           <div class="modal-footer">
             <a class='btn btn-primary' class='btn btn-primary' href='/'>На главную</a>
+            <a class='btn btn-primary' class='btn btn-primary' href='/bets'>Все ставки</a>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
           </div>
         </div>
