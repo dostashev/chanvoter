@@ -1,6 +1,7 @@
 from datetime import datetime
 
-from database.models import *
+from .database.models import *
+from .database.schemas import *
 
 
 class ChanVoterApi(object):
@@ -13,12 +14,16 @@ class ChanVoterApi(object):
 
 
     def get_user(self, address):
-        return self.dbsession.query(User).filter(
+        user = self.dbsession.query(User).filter(
             User.address == address).first()
+        us = UserSchema()
+        return us.dump(user).data
 
 
     def get_contest(self, id):
-        return self.dbsession.query(Contest).filter(Contest.id == id).first()
+        contest = self.dbsession.query(Contest).filter(Contest.id == id).first()
+        cs = ContestSchema()
+        return cs.dump(contest).data
 
 
     def get_bets(self, user_addr=None, contest_id=None):
@@ -30,7 +35,8 @@ class ChanVoterApi(object):
         if not contest_id is None:
             bets = bets.filter(Bet.contest_id == contest_id)
 
-        return bets.all()
+        bs = BetSchema(many=True)
+        return bs.dump(bets.all()).data
 
 
     def get_votes(self, user_addr=None, contest_id=None):
@@ -42,39 +48,50 @@ class ChanVoterApi(object):
         if not contest_id is None:
             votes = votes.filter(Vote.contest_id == contest_id)
 
-        return votes.all()
+        vs = VoteSchema(many=True)
+        return vs.dump(votes.all()).data
+
+    
+    def get_contests(self):
+        contests = self.dbsession.query(Contest)
+        cs = ContestSchema(many=True)
+        return cs.dump(contests.all()).data
 
 
     def get_user_by_private_key(self, private_key):
-        return self.dbsession.query(User).filter(
+        user = self.dbsession.query(User).filter(
             User.private_key == private_key).first()
+        us = UserSchema()
+        return us.dump(user).data
 
 
     def get_balance(self, addr):
         user = self.get_user(addr)
-        return user.coins
+        return user["coins"]
 
-
+    '''
     def check_already_voted(self, addr, contest_id):
         bets = self.get_bets(user_addr=user_addr, contest_id=contest_id)
         return bet
-
+    '''
 
     def check_contest_active(self, id):
         contest = self.get_contest(id)
-        return not contest.finalized and contest.begin <= datetime.today(
-        ) <= contest.end
+        begin = datetime.fromisoformat(contest["begin"])
+        end = datetime.fromisoformat(contest["end"])
+        return not contest["finalized"] and begin <= datetime.today() <= end
 
 
     def check_contest_finalizable(self, id):
         contest = self.get_contest(id)
-        return not contest.finalized and contest.begin <= datetime.today()
+        begin = datetime.fromisoformat(contest["begin"])
+        return not contest["finalized"] and begin <= datetime.today()
 
 
     def check_contest_is_bet(self, id):
         contest = self.get_contest(id)
-        return datetime.today() <= contest.begin
-
+        begin = datetime.fromisoformat(contest["begin"])
+        return datetime.today() <= begin
 
     def get_bet_coeffs(self, contest_id):
         """ Return how much money will get
@@ -87,10 +104,10 @@ class ChanVoterApi(object):
         s2 = 0
 
         for b in bets:
-            if b.chosen_id == contest.first_girl_id:
-                s1 += b.coins
-            if b.chosen_id == contest.second_girl_id:
-                s2 += b.coins
+            if b["chosen_id"] == contest["first_girl_id"]:
+                s1 += b["coins"]
+            if b["chosen_id"] == contest["second_girl_id"]:
+                s2 += b["coins"]
 
         k1 = '&infin;' if s1 == 0 else (s1 + s2) / s1
         k2 = '&infin;' if s2 == 0 else (s1 + s2) / s2
@@ -98,9 +115,9 @@ class ChanVoterApi(object):
 
 
     def get_active_contests(self):
-        contests = self.dbsession.query(Contest).all()
+        contests = self.get_contests()
         contests = filter(lambda c :
-            self.check_contest_active(c.id),
+            self.check_contest_active(c["id"]),
             contests)
         return list(contests)
 
@@ -111,14 +128,14 @@ class ChanVoterApi(object):
         `k1` and `k2` fields with bet coeffs to every
         contest object
         """
-        contests = self.dbsession.query(Contest).all()
+        contests = self.get_contests()
         contests = filter(lambda c :
-            self.check_contest_is_bet(c.id),
+            self.check_contest_is_bet(c["id"]),
             contests)
 
         if include_coeffs:
             for c in contests: 
-                k1, k2 = self.get_bet_coeffs(c.id)
+                k1, k2 = self.get_bet_coeffs(c["id"])
                 #c.k1 = k1
                 #c.k2 = k2
 
@@ -126,9 +143,9 @@ class ChanVoterApi(object):
 
 
     def get_finalizable_contests(self):
-        contests = self.dbsession.query(Contest).all()
+        contests = self.get_contests()
         contests = filter(lambda c :
-            self.check_contest_finalizable(c.id),
+            self.check_contest_finalizable(c["id"]),
             contests)
         return list(contests)
 
@@ -141,7 +158,7 @@ class ChanVoterApi(object):
         girls = self.dbsession.query(Girl).all()
 
         if sort_by_elo:
-            girls = sorted(girls, key=lambda g: g.ELO)
+            girls = sorted(girls, key=lambda g: g["ELO"])
 
         if enum:
             for g, i in zip(girls, range(1, len(girls) + 1)):
@@ -159,7 +176,7 @@ class ChanVoterApi(object):
         girls_dict = dict()
 
         for g in girls:
-            girls_dict.update({g.id, g})
+            girls_dict.update({g["id"], g})
 
         return girls_dict
 
@@ -173,7 +190,7 @@ class ChanVoterApi(object):
         make a bit
         """
         votes = self.get_votes(user_addr=user_addr)
-        return list(map(lambda v : v.contest_id, votes)) 
+        return list(map(lambda v : v["contest_id"], votes)) 
 
 
     def get_rated_contest_ids(self, user_addr):
@@ -181,7 +198,7 @@ class ChanVoterApi(object):
         made a bit
         """
         bets = self.get_bets(user_addr=user_addr)
-        return list(map(lambda b : b.contest_id, bets))
+        return list(map(lambda b : b["contest_id"], bets))
 
 
 

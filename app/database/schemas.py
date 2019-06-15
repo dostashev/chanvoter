@@ -25,6 +25,11 @@ class ContestSchema(Schema):
     end   = fields.DateTime()
     finalized = fields.Bool()
 
+    class Meta:
+        dateformat = '%Y-%m-%dT%H:%M:%S' 
+        # for marshmallow 3
+        datetimeformat = '%Y-%m-%dT%H:%M:%S'
+
 
 class VoteSchema(Schema):
     id = fields.Int()
@@ -35,7 +40,7 @@ class VoteSchema(Schema):
     chosen_id = fields.Int()
     
 
-class BetScheme(Schema):
+class BetSchema(Schema):
     id = fields.Int()
     coins = fields.Int()
     user_addr = fields.Str()

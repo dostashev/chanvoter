@@ -52,9 +52,9 @@ def index():
     user = cvapi.get_user_by_private_key(session['private_key'])
     return render_template('index.html.j2',
         active_contests=cvapi.get_active_contests(),
-        voted_contests=cvapi.get_voted_contest_ids(user.address),
+        voted_contests=cvapi.get_voted_contest_ids(user["address"]),
         bet_contests=cvapi.get_bet_contests(),
-        rated_contests=cvapi.get_rated_contest_ids(user.address))
+        rated_contests=cvapi.get_rated_contest_ids(user["address"]))
 
 
 @app.route('/contests', methods=['GET'])
@@ -64,7 +64,7 @@ def contests():
     user = cvapi.get_user_by_private_key(session['private_key'])
     return render_template('contests.html.j2', 
         active_contests=cvapi.get_active_contests(),
-        voted_contests=cvapi.get_voted_contest_ids(user.address))
+        voted_contests=cvapi.get_voted_contest_ids(user["address"]))
 
 
 @app.route('/bets', methods=['GET'])
@@ -75,7 +75,7 @@ def bets():
     print(cvapi.get_bet_contests(include_coeffs=True))
     return render_template('bets.html.j2',
         bet_contests=cvapi.get_bet_contests(include_coeffs=True),
-        rated_contests=cvapi.get_rated_contest_ids(user.address))
+        rated_contests=cvapi.get_rated_contest_ids(user["address"]))
 
 
 @app.route("/resources/<path:path>")
