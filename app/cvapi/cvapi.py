@@ -3,6 +3,7 @@ from datetime import datetime
 from app.database.models import *
 from app.database.schemas import *
 from .cvconfig import ChanVoterConfig
+from .rating import get_elo_change
 
 class ChanVoterApi(object):
 
@@ -26,6 +27,12 @@ class ChanVoterApi(object):
         return cs.dump(contest).data
 
 
+    def get_bet(self, id):
+        bet = self.dbsession.query(Bet).filter(Bet.id == id).first()
+        bs = BetSchema()
+        return cs.dump(bet).data
+
+
     def get_bets(self, user_addr=None, contest_id=None):
         bets = self.dbsession.query(Bet)
 
@@ -39,14 +46,17 @@ class ChanVoterApi(object):
         return bs.dump(bets.all()).data
 
 
-    def get_votes(self, user_addr=None, contest_id=None):
+    def get_votes(self, user_addr=None, contest_id=None, chosen_id=None):
         votes = self.dbsession.query(Vote)
 
-        if not user_addr is None:
+        if user_addr:
             votes = votes.filter(Vote.user_addr == user_addr)
 
-        if not contest_id is None:
+        if contest_id:
             votes = votes.filter(Vote.contest_id == contest_id)
+
+        if chosen_id:
+            votes = votes.filter(Vote.chosen_id == chosen_id)            
 
         vs = VoteSchema(many=True)
         return vs.dump(votes.all()).data
@@ -153,11 +163,7 @@ class ChanVoterApi(object):
 
     def get_bet_contest(self, id):
         """ Return contest with its bet-coeffs. 
-        If contest isn't a bet then raise a `ValueError`
         """
-        if not self.check_contest_is_bet(id):
-            raise ValueError("Given contest have to be a bet")
-
         contest = self.get_contest(id)
         k1, k2 = self.get_bet_coeffs(id)
         contest["coeff1"] = k1
@@ -234,6 +240,28 @@ class ChanVoterApi(object):
             raise ValueError("User balance can't be a negative")
 
         user.coins += delta
+        self.dbsession.commit()
+
+
+    def update_elo(self, id, delta):
+        girl = self.dbsession.query(Girl).filter(
+            Girl.id == id).first()
+        girl.ELO += delta
+        self.dbsession.commit()
+
+
+    def begin_contest(self, id):
+        contest = self.dbsession.query(Contest).filter(
+            Contest.id == id).first()
+        contest.begin = datetime.today()
+        self.dbsession.commit()
+
+
+    def finalize_contest(self, id):
+        contest = self.dbsession.query(Contest).filter(
+            Contest.id == id).first()
+        contest.finalized = True
+        self.dbsession.commit()
 
 
     def vote(self, private_key, contest_id, chosen_id):
@@ -300,3 +328,76 @@ class ChanVoterApi(object):
         self.dbsession.commit()
 
         return "success"
+
+
+    def check_if_admin(self, key):
+        return key == ChanVoterConfig.ADMIN_PASS
+
+
+    def get_contest_votes_number(self, id):
+        """ Return touple where first element
+        is how many people voted for first girl, 
+        and the same second second
+        """
+        contest = self.get_contest(id)
+        first_girl_votes = self.get_votes(chosen_id=contest["first_girl_id"], contest_id=id) 
+        second_girl_votes = self.get_votes(chosen_id=contest["second_girl_id"], contest_id=id)
+        return len(first_girl_votes), len(second_girl_votes)
+
+
+    def close_bet(self, bet_id, contest_id, winner_id):
+        """ Recalc users balance after a bet, set it `finalized`
+        NOTE: if `winner_id` is `-1` then it is draw
+        TODO: think about a better soltuion
+        """
+        bet = self.dbsession.query(Bet).filter(
+            Bet.id == bet_id).first()
+        contest = self.get_bet_contest(contest_id)
+        if bet.chosen_id == winner_id:
+            coeff = 1
+            if contest["first_girl_id"] == winner_id:
+                coeff = contest["coeff1"] 
+            else:
+                coeff = contest["coeff2"]
+
+            print('COEFF CHOSEN', coeff)
+            self.update_balance(bet.user_addr, coeff * bet.coins)
+            bet.profit = (coeff - 1) * bet.coins
+        elif winner_id == -1:
+            self.update_balance(bet.user_addr, bet.coins)
+            bet.profit = 0
+        else:
+            bet.profit = -bet.coins
+
+        bet.finalized = True
+        self.dbsession.commit()    
+
+
+    def finish_contest(self, id):
+        """ Finish contest if it is possible. Doesn't
+        throw exceptions. After recalc ElO table and close 
+        all bets connected with this contest.
+        """
+        contest = self.get_contest(id)
+        fgv, sgv = self.get_contest_votes_number(id)
+        delta = get_elo_change(contest["first_girl"]["ELO"],
+            contest["second_girl"]["ELO"],
+            fgv, 
+            sgv)
+
+        self.update_elo(contest["first_girl_id"], delta)
+        self.update_elo(contest["second_girl_id"], -delta)
+        self.finalize_contest(id)
+       
+        winner_id = -1
+        if fgv > sgv:
+            winner_id = contest["first_girl_id"]
+        elif sgv > fgv:
+            winner_id = contest["second_girl_id"]
+        print("BALANCE:", fgv, sgv)
+        print("ALERT, WINNER ID:", winner_id)
+
+        bets = self.get_bets(contest_id=id)
+        for b in bets:
+            self.close_bet(b["id"], contest["id"], winner_id)
+         

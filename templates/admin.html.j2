@@ -17,7 +17,7 @@
                 </tr>
             </thead>
             <tbody>
-            {% for contest in active_contests %}
+            {% for contest in finalizable_contests %}
                 <tr>
                     <td>{{ contest.id }}</td>
                     <td>{{ contest.first_girl.id }}</td>
@@ -56,7 +56,7 @@
             {% endfor %}
             </tbody>
         </table> 
-    </div>
+</div>
     <div class='jumbotron'>
         <h1 class="display-4">Users</h1>
         <table class='table'>
@@ -80,6 +80,7 @@
             </tbody>
         </table> 
     </div>
+
     <div class='jumbotron'>
         <h1 class="display-4">Girls</h1>
         <table class='table'>
