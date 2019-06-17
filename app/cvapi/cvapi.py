@@ -141,13 +141,13 @@ class ChanVoterApi(object):
         return list(contests)
 
 
-    def get_bet_contests(self, include_coeffs=False):
+    def get_bet_contests(self, include_coeffs=False, **argv):
         """ Return contests from which you can bet.
         If `include_coeffs` flag is set then add
         `k1` and `k2` fields with bet coeffs to every
         contest object
         """
-        contests = self.get_contests()
+        contests = self.get_contests(**argv)
         contests = list(filter(lambda c :
             self.check_contest_is_bet(c["id"]),
             contests))
@@ -185,13 +185,15 @@ class ChanVoterApi(object):
         If `enum` flag set then add field number to every girl object
         """
         girls = self.dbsession.query(Girl).all()
+        gs = GirlSchema(many=True)
+        girls = gs.dump(girls).data
 
         if sort_by_elo:
-            girls = sorted(girls, key=lambda g: g["ELO"])
+            girls = sorted(girls, key=lambda g: -g["ELO"])
 
         if enum:
             for g, i in zip(girls, range(1, len(girls) + 1)):
-               #g.number = i 
+               g["rating"] = i 
                pass
 
         return list(girls)
