@@ -116,6 +116,13 @@ def rate():
         args["coins"])
 
 
+@app.route("/rating", methods=["GET"])
+@login_required
+def rating():
+    cvapi = ChanVoterApi(db.session)
+    return render_template("rating.html.j2", 
+        girls=cvapi.get_girls(sort_by_elo=True, enum=True))
+
 @app.route("/resources/<path:path>")
 def send_resource(path):
    return send_from_directory("/home/deadstone/Projects/chanvoter/chanvoter/resources", path)

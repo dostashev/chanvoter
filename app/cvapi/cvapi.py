@@ -185,13 +185,15 @@ class ChanVoterApi(object):
         If `enum` flag set then add field number to every girl object
         """
         girls = self.dbsession.query(Girl).all()
+        gs = GirlSchema(many=True)
+        girls = gs.dump(girls).data
 
         if sort_by_elo:
-            girls = sorted(girls, key=lambda g: g["ELO"])
+            girls = sorted(girls, key=lambda g: -g["ELO"])
 
         if enum:
             for g, i in zip(girls, range(1, len(girls) + 1)):
-               #g.number = i 
+               g["rating"] = i 
                pass
 
         return list(girls)
