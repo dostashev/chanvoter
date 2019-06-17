@@ -59,6 +59,7 @@ class Vote(db.Model):
 
     user = db.relationship('User')
     contest = db.relationship('Contest')
+    chosen = db.relationship('Girl')
 
 
 class Bet(db.Model):
@@ -74,3 +75,4 @@ class Bet(db.Model):
 
     user = db.relationship('User')
     contest = db.relationship('Contest')
+    chosen = db.relationship('Girl')

@@ -123,6 +123,22 @@ def rating():
     return render_template("rating.html.j2", 
         girls=cvapi.get_girls(sort_by_elo=True, enum=True))
 
+
+@app.route("/profile", methods=["GET"])
+@login_required
+def profile(): 
+    cvapi = ChanVoterApi(db.session)
+    user = cvapi.get_user_by_private_key(session["private_key"])
+    bets = cvapi.get_bets(user_addr=user["address"])
+    votes = cvapi.get_votes(user_addr=user["address"])
+    bets = list(reversed(bets))[:10]
+    votes = list(reversed(votes))[:10]
+    return render_template("profile.html.j2", 
+        user=user,
+        votes=votes,
+        bets=bets)
+
+
 @app.route("/resources/<path:path>")
 def send_resource(path):
    return send_from_directory("/home/deadstone/Projects/chanvoter/chanvoter/resources", path)

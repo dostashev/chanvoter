@@ -141,13 +141,13 @@ class ChanVoterApi(object):
         return list(contests)
 
 
-    def get_bet_contests(self, include_coeffs=False):
+    def get_bet_contests(self, include_coeffs=False, **argv):
         """ Return contests from which you can bet.
         If `include_coeffs` flag is set then add
         `k1` and `k2` fields with bet coeffs to every
         contest object
         """
-        contests = self.get_contests()
+        contests = self.get_contests(**argv)
         contests = list(filter(lambda c :
             self.check_contest_is_bet(c["id"]),
             contests))
