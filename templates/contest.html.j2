@@ -64,6 +64,23 @@
         </div>
     </div>
 
+    <div class="row mt-2 col-12">
+        <div class="progress col-8 mx-auto">
+            <div class="progress-bar" role="progressbar" saria-valuenow="100"  aria-valuemin="0" aria-valuemax="100" style="width: {{ 100 * contest.amount1 / (contest.amount1 + contest.amount2) }}%"></div>
+            <div class="progress-bar bg-success" role="progressbar" saria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: {{ 100 * contest.amount2 / (contest.amount1 + contest.amount2) }}%"></div>
+        </div>
+    </div>
+
+
+    <div class='row col-12'>
+        <div class="input-group mt-3 pb-3 col-8 mx-auto">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1"> $ </span>
+            </div>
+            <input id='coins' type="text" value="100" class="form-control" placeholder="Сумма голоса">
+        </div>
+    </div>
+
     <div class='row col-12'>
         <div class="input-group mt-3 pb-3 col-8 mx-auto">
             <div class="input-group-prepend">

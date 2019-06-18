@@ -56,6 +56,7 @@ class Vote(db.Model):
     user_addr = db.Column(db.Integer, db.ForeignKey('users.address'))
     contest_id = db.Column(db.Integer, db.ForeignKey('contests.id'))
     chosen_id = db.Column(db.Integer, db.ForeignKey('girls.id'))
+    amount = db.Column(db.Integer, default=100)
 
     user = db.relationship('User')
     contest = db.relationship('Contest')

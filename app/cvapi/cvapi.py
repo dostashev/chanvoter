@@ -21,10 +21,14 @@ class ChanVoterApi(object):
         return us.dump(user).data
 
 
-    def get_contest(self, id):
+    def get_contest(self, id, include_amounts=False):
         contest = self.dbsession.query(Contest).filter(Contest.id == id).first()
         cs = ContestSchema()
-        return cs.dump(contest).data
+        contest = cs.dump(contest).data
+
+        if include_amounts:
+            contest['amount1'], contest['amount2'] = self.get_contest_votes_sums(id)
+        return contest
 
 
     def get_bet(self, id):
@@ -266,14 +270,22 @@ class ChanVoterApi(object):
         self.dbsession.commit()
 
 
-    def vote(self, private_key, contest_id, chosen_id):
+    def vote(self, private_key, contest_id, chosen_id, coins):
         """ Make a bet and returs `success` or return and error.
         Errors:
         "error: inactive contest",
         "error: invalid private key",
         "error: already voted in this contest",
-        "error: not enough of money"
+        "error: not enough money",
+        "error: invalid amount of coins"
         """
+        try:
+            coins = int(coins)
+        except ValueError:
+            return "error: invalid amount of coins"
+        if coins <= 0:
+            return "error: invalid amount of coins"
+
         if not self.check_contest_active(contest_id):
             return "error: inactive contest"
 
@@ -284,11 +296,11 @@ class ChanVoterApi(object):
         if self.check_already_voted(user["address"], contest_id):
             return "error: already voted in this contest"
 
-        if user["coins"] < ChanVoterConfig.COINS_PER_VOTE:
+        if user["coins"] < coins:
             return "error: not enough money"
 
-        self.update_balance(user["address"], -ChanVoterConfig.COINS_PER_VOTE)
-        vote = Vote(user_addr=user["address"], chosen_id=chosen_id, contest_id=contest_id)
+        self.update_balance(user["address"], -coins)
+        vote = Vote(user_addr=user["address"], chosen_id=chosen_id, contest_id=contest_id, amount=coins)
         self.dbsession.add(vote)
         self.dbsession.commit()
 
@@ -305,7 +317,7 @@ class ChanVoterApi(object):
         "error: invalid amount of coins"
         """
         try:
-            coins = float(coins)
+            coins = int(coins)
         except ValueError:
             return "error: invalid amount of coins"
         if coins <= 0:
@@ -336,7 +348,7 @@ class ChanVoterApi(object):
         return key == ChanVoterConfig.ADMIN_PASS
 
 
-    def get_contest_votes_number(self, id):
+    def get_contest_votes_sums(self, id):
         """ Return touple where first element
         is how many people voted for first girl, 
         and the same second second
@@ -344,7 +356,7 @@ class ChanVoterApi(object):
         contest = self.get_contest(id)
         first_girl_votes = self.get_votes(chosen_id=contest["first_girl_id"], contest_id=id) 
         second_girl_votes = self.get_votes(chosen_id=contest["second_girl_id"], contest_id=id)
-        return len(first_girl_votes), len(second_girl_votes)
+        return sum(map(lambda x:x['amount'],first_girl_votes)), sum(map(lambda x:x['amount'],second_girl_votes))
 
 
     def close_bet(self, bet_id, contest_id, winner_id):
@@ -381,12 +393,12 @@ class ChanVoterApi(object):
         all bets connected with this contest.
         """
         contest = self.get_contest(id)
-        fgv, sgv = self.get_contest_votes_number(id)
+        fgv, sgv = self.get_contest_votes_sums(id)
         delta = get_elo_change(contest["first_girl"]["ELO"],
             contest["second_girl"]["ELO"],
             fgv, 
             sgv)
-
+        
         self.update_elo(contest["first_girl_id"], delta)
         self.update_elo(contest["second_girl_id"], -delta)
         self.finalize_contest(id)

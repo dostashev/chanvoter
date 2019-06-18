@@ -38,6 +38,7 @@ class VoteSchema(Schema):
     contest_id = fields.Int()
     contest = fields.Nested(ContestSchema)
     chosen_id = fields.Int()
+    amount = fields.Int()
     chosen = fields.Nested(GirlSchema)
     
 
