@@ -137,8 +137,3 @@ def profile():
         user=user,
         votes=votes,
         bets=bets)
-
-
-@app.route("/resources/<path:path>")
-def send_resource(path):
-   return send_from_directory("/home/deadstone/Projects/chanvoter/chanvoter/resources", path)

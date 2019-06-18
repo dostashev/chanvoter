@@ -19,5 +19,9 @@ def make_app(config, **argv):
         jinja2.FileSystemLoader(config.TEMPLATE_DIR)])
     app.jinja_loader = templates_loader
 
+    @app.route("/resources/<path:path>", methods = ["GET"])
+    def resources(path):
+        return flask.send_from_directory(app.config['STATIC_DIR'],path)
+
     return app
 
