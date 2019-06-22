@@ -12,7 +12,7 @@ parser.add_argument('--config', default="config", type=str, dest="config_name")
 
 if __name__ == "__main__":
     args = parser.parse_args()
-    config = importlib.import_module(args.config_name).Config
+    config = importlib.import_module(args.config_name).Config()
 
     os.chdir(config.BASE_DIR)
     app = make_app(config=config)

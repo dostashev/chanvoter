@@ -16,22 +16,36 @@
                 <th scope="col">Статус</th>
             </tr>
             <tbody>
-                {% for bet in bet_contests %}
-                {% if bet.id in opened_bets %}
+                {% for contest in bet_contests %}
+                {% if contest.id in rated_contests  %}
                 <tr class='table-success'>
                 {% else %}
                 <tr class='table-warning'>
                 {% endif %}
                     <td>
-                        <a href='/bet/{{ bet.id }}'>
-                            /bet/{{ bet.id }}
+                        <a href='/bet/{{ contest.id }}'>
+                            /bet/{{ contest.id }}
                         </a>
                     </td>
-                    <td>{{ girls[bet.first_girl_id - 1].name }}</td>
-                    <td>{{ girls[bet.second_girl_id - 1].name }}</td>
-                    <td> x{{ koeffs[bet.id][0] }} : x{{ koeffs[bet.id][1] }} </td>
+
+                    <td>{{ contest.first_girl.name }}</td>
+                    <td>{{ contest.second_girl.name }}</td>
+ 
                     <td>
-                        {% if bet.id in opened_bets  %}
+                        x{% if contest.coeff1|float() %}
+                            {{ contest.coeff1|round(2) }}
+                        {% else %}
+                            {{ contest.coeff1 }}
+                        {% endif %}  
+                        : x{% if contest.coeff2|float() %}
+                            {{ contest.coeff2|round(2) }} 
+                        {% else %}
+                            {{ contest.coeff2 }}
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if contest.id in rated_contests  %}
                         Сделали ставку
                         {% else %}
                         Не сделали ставку

@@ -9,7 +9,7 @@
     <div class='jumbotron text-center'>
         <div class='row'>
             <div class='img-wrapper col-lg-6 col-sm-12 d-block mx-auto'>
-                <img  class='img rounded' style='width: 100%; height: auto;' src='http://www.izbrannoe.com/upload/resize_cache/iblock/98c/705_391_2/98c13dcb42bf7427cef55b1c16771529.jpg'>
+                <img  class='img rounded' style='width: 100%; height: auto;' src='/resources/index-quote.jpg'>
             </div>
         </div>
 
@@ -50,7 +50,7 @@
                     <div class='card-text mt-3'>
                         <h4>
                             До конца соревнования осталось 
-                            <span class='countdown badge badge-primary' endtime='{{ contest.end.isoformat() }}'></span>
+                            <span class='countdown badge badge-primary' endtime='{{ contest.end  }}'></span>
                         </h4>
                     </div>
                 </div>
@@ -115,13 +115,13 @@
                     <div class='card-text mt-3'>
                         <h4>
                             До начала соревнования осталось 
-                            <span class='badge badge-primary waiting-countdown' begintime='{{ contest.begin.isoformat() }}'></span>
+                            <span class='badge badge-primary waiting-countdown' begintime='{{ contest.begin }}'></span>
                         </h4>
                     </div>
                 </div>
 
                 <div class='card-footer text-muted'>
-                    {% if contest.id in opened_bets %}
+                    {% if contest.id in rated_contests %}
                     Вы уже сделали ставку
                     {% else %}
                     Вы еще не сделали ставку

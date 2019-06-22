@@ -34,21 +34,16 @@
 
                 <tbody>
                     {% for girl in girls %}
-                    {% if girl.rating > (girls|length) / 2 %}
                     <tr>
                     <th scope='row'>{{ girl.rating }}</th>
+                    {% if girl.rating > (girls|length) / 2 %}
                     <td>***</td>
                     <td>***</a>
-                    <td>{{ girl.ELO_rounded }}</td>
-                    </tr>
                     {% else %}
-                    <tr>
-                    <th scope='row'>{{ girl.rating }}</th>
                     <td>{{ girl.name }}</td>
                     <td><a href='http://www.instagram.com/{{ girl.instagram }}'>{{ girl.instagram }}</a>
-                    <td>{{ girl.ELO_rounded }}</td>
-                    </tr>
                     {% endif %}
+                    <td>{{ girl.ELO|round(2) }}</td>
                     {% endfor %}
                 </tbody>
             </table>

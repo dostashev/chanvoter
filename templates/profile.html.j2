@@ -3,15 +3,15 @@
     {% block body %}
     <div class='container mt-4'>
         <div class='h1 mx-auto text-center'>
-            Пользователь <b>{{ user_addr }}</b>
+            Пользователь <b>{{ user.address }}</b>
         </div>
         <div class='h4 mx-auto text-center'>
-            Баланс: <b>{{ balance }}</b> монет
+            Баланс: <b>{{ user.coins }}</b> монет
         </div>
     </div>
 
     <div class='container col-12 mt-5'>
-        <h1 class="h1">Ваши ставки</h1>
+        <h1 class="h1">Ваши ставки <span class='text-muted'>(Первые 10)</span></h1>
         <div class='table-responsive'>
         <table class='table'>
             <thead>
@@ -35,7 +35,7 @@
                 {% endif %}
                 '>
                 <td><a href='/bet/{{ bet.contest_id  }}'>/bet/{{ bet.contest_id }}</a></td>
-                <td>{{ girls_dict[bet.chosen_id].name }}</td>
+                <td>{{ bet.chosen.name }}</td>
                 <td>{{ bet.coins }}</td>
                 <td>{% if bet.finalized %} Завершен  {% else %} Ожидание  {% endif %}</td>
                 <td>{{ bet.profit }}</td>
@@ -47,7 +47,7 @@
 </div>
 
 <div class='container col-12 mt-5'>
-    <h1 class="h1">Ваши голоса</h1>
+    <h1 class="h1">Ваши голоса <span class='text-muted'>(Первые 10)</span></h1>
     <div class='table-responsive'>
     <table class='table'>
         <thead>
@@ -59,8 +59,8 @@
         <tbody>
             {% for vote in votes %}
             <tr>
-                <td><a href='/contest/{{ vote.contest_id  }}'>/contest/{{ vote.contest_id }}</a></td>
-                <td>{{ girls_dict[vote.chosen_id].name }}</td>
+                <td><a href='/contest/{{ vote.contest.id  }}'>/contest/{{ vote.contest.id }}</a></td>
+                <td>{{ vote.chosen.name }}</td>
             </tr>
             {% endfor %}
         </tbody>

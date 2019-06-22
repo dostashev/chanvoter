@@ -14,7 +14,7 @@ window.addEventListener("load", () => {
         var next_url = getQueryVariable('next')
 
         key = document.getElementById("key-form").value;
-        fetch(`/admin_auth?key=${ key }`)
+        fetch(`/admin_auth?key=${ key }`, {method : 'POST'})
         .then( (resp) => {
             return resp.text()
         })

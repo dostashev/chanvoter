@@ -5,14 +5,15 @@
     {{ super() }}
     
     <script type='text/javascript'>
-        FIRST_GIRL_ID = {{ first_girl.id }};
-        SECOND_GIRL_ID = {{ second_girl.id }};
-        CONTEST_ID = {{ contest_id }};
-        PRIVATE_KEY = "{{ private_key }}";
+        FIRST_GIRL_ID = {{ contest.first_girl_id }};
+        SECOND_GIRL_ID = {{ contest.second_girl_id }};
+        CONTEST_ID = {{ contest.id }};
+        PRIVATE_KEY = "{{ user.private_key }}";
     </script>
     
     <script type='text/javascript' src='/resources/scripts/contest.js'></script>
     <link rel='stylesheet' type='text/css' href='/resources/styles/op-img.css'>
+
 {% endblock %}
 
 {% block body %}
@@ -42,24 +43,41 @@
         <div class='card-deck text-center mt-3 col-8 mx-auto'>
             <div class='card' id='first-girl-card'>
                 <div class='op-container'>
-                    <img src="{{ first_girl.photo }}" class="card-img-top op-image" alt="...">
+                    <img src="{{ contest.first_girl.photo }}" class="card-img-top op-image" alt="...">
                     <div class='op-middle bg-secondary text-white pl-1 pr-1'><h2>Нажмите чтобы голосовать</h2></div>
                 </div>
                 <div class='card-footer'>
-                    {{ first_girl.name }}
+                    {{ contest.first_girl.name }}
                 </div>
             </div>
 
             <div class='card' id='second-girl-card'>
                 <div class='op-container'>
-                    <img src="{{ second_girl.photo }}" class="card-img-top op-image" alt="...">
+                    <img src="{{ contest.second_girl.photo }}" class="card-img-top op-image" alt="...">
                     <div class='op-middle bg-secondary text-white pl-1 pr-1'><h2>Нажмите чтобы голосовать</h2></div>
                 </div>
 
                 <div class='card-footer'>
-                    {{ second_girl.name }}
+                    {{ contest.second_girl.name }}
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="row mt-2 col-12">
+        <div class="progress col-8 mx-auto">
+            <div class="progress-bar" role="progressbar" saria-valuenow="100"  aria-valuemin="0" aria-valuemax="100" style="width: {{ 100 * contest.amount1 / (contest.amount1 + contest.amount2) }}%"></div>
+            <div class="progress-bar bg-success" role="progressbar" saria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: {{ 100 * contest.amount2 / (contest.amount1 + contest.amount2) }}%"></div>
+        </div>
+    </div>
+
+
+    <div class='row col-12'>
+        <div class="input-group mt-3 pb-3 col-8 mx-auto">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1"> $ </span>
+            </div>
+            <input id='coins' type="text" value="100" class="form-control" placeholder="Сумма голоса">
         </div>
     </div>
 
@@ -74,7 +92,7 @@
 
     <!-- Alerts form r there -->
 
-    <div class="modal" tabindex="-1" role="dialog" id='success-alert'>
+    <div class="modal fade" tabindex="-1" role="dialog" id='success-alert'>
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -87,13 +105,14 @@
           </div>
           <div class="modal-footer">
             <a class='btn btn-primary' class='btn btn-primary' href='/'>На главную</a>
+            <a class='btn btn-primary' class='btn btn-primary' href='/contests'>Другие соревнования</a>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="modal" tabindex="-1" role="dialog" id='wrong-key-alert'>
+    <div class="modal fade" tabindex="-1" role="dialog" id='wrong-key-alert'>
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -107,13 +126,14 @@
           </div>
           <div class="modal-footer">
             <a class='btn btn-primary' class='btn btn-primary' href='/'>На главную</a>
+            <a class='btn btn-primary' class='btn btn-primary' href='/contests'>Другие соревнования</a>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="modal" tabindex="-1" role="dialog" id='extra-vote-alert'>
+    <div class="modal fade" tabindex="-1" role="dialog" id='extra-vote-alert'>
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -127,10 +147,31 @@
           </div>
           <div class="modal-footer">
             <a class='btn btn-primary' class='btn btn-primary' href='/'>На главную</a>
+            <a class='btn btn-primary' class='btn btn-primary' href='/contests'>Другие соревнования</a>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
           </div>
         </div>
       </div>
     </div>
-
+ 
+    <div class="modal fade" tabindex="-1" role="dialog" id='less-money-alert'>
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Ошибка</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>У вас не хватает денег.</p>
+          </div>
+          <div class="modal-footer">
+            <a class='btn btn-primary' class='btn btn-primary' href='/'>На главную</a>
+            <a class='btn btn-primary' class='btn btn-primary' href='/contests'>Другие соревнования</a>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+          </div>
+        </div>
+      </div>
+    </div>
 {% endblock %}
